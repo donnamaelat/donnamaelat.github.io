@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CV / Resume — Donna Mae Lat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <style>
+    /* Custom CV Styles */
+    .cv-section { padding: 120px 0; min-height: calc(100vh - 200px); }
+    .cv-card {
+      background: var(--bg-glass);
+      backdrop-filter: var(--blur);
+      -webkit-backdrop-filter: var(--blur);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 50px 60px;
+      box-shadow: var(--shadow-low);
+      margin-bottom: 32px;
+    }
+    @media (max-width: 768px) {
+      .cv-card { padding: 30px; }
+    }
+    .cv-title { 
+      font-family: var(--font-display); 
+      font-size: 1.6rem; 
+      font-weight: 600; 
+      color: var(--text); 
+      margin-bottom: 24px; 
+      text-transform: uppercase; 
+      letter-spacing: 0.05em; 
+    }
+    .cv-timeline {
+      border-left: 4px solid var(--border);
+      padding-left: 24px;
+      margin-left: 8px;
+    }
+    .cv-item { margin-bottom: 32px; position: relative; }
+    .cv-item:last-child { margin-bottom: 0; }
+    .cv-role { font-size: 1.15rem; font-weight: 700; color: var(--text); margin: 0 0 6px 0; }
+    .cv-company { font-size: 1rem; font-weight: 600; color: var(--text-mid); margin: 0 0 12px 0; }
+    .cv-date { font-weight: 400; color: var(--text-muted); font-size: 0.95rem; margin-left: 4px; }
+    .cv-desc { font-size: .95rem; color: var(--text-mid); line-height: 1.6; margin-bottom: 8px; }
+    .cv-desc-list { list-style: none; margin: 0; padding: 0; }
+    .cv-desc-list li { margin-bottom: 6px; font-size: .95rem; color: var(--text-mid); line-height: 1.6; }
+    .project-tags { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+    .project-tags li { margin: 0; }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="about.html" class="nav-logo">
+        <img src="../assets/img/logo.png" alt="DML Logo" class="nav-logo-img">
+        <span>DML<span class="nav-logo-dot">.</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="about.html">About</a></li>
+        <li><a href="cv.html" class="active">CV</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="awards.html">Awards</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <button class="nav-hamburger" id="hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile nav overlay -->
+  <div class="mobile-nav" id="mobileNav">
+    <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">✕</button>
+    <ul>
+      <li><a href="about.html" class="mob-link">About</a></li>
+      <li><a href="cv.html" class="mob-link">CV</a></li>
+      <li><a href="projects.html" class="mob-link">Projects</a></li>
+      <li><a href="awards.html" class="mob-link">Awards</a></li>
+      <li><a href="contact.html" class="mob-link">Contact</a></li>
+    </ul>
+  </div>
+
+  <div style="padding-top: 68px;"></div> <!-- Spacer for fixed navbar -->
+
+  <!-- CV Section -->
+  <section class="cv-section" id="cv">
+    <div class="container">
+      <div class="section-header reveal-bottom d-none">
+        <p class="section-eyebrow">Curriculum Vitae</p>
+        <h2 class="section-heading">Experience &amp; <em>Education.</em></h2>
+      </div>
+
+      <div class="row g-4 justify-content-center mt-3">
+        <div class="col-lg-10">
+          
+          <!-- One Continuous Card for that clean resume look -->
+          <div class="cv-card reveal-bottom">
+            
+            <!-- Header Section with Download -->
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px;">
+              <h3 class="cv-title" style="margin-bottom: 0;">Professional Summary</h3>
+              <a href="../assets/img/Donna_Mae_Lat_Resume_ATS.docx" class="btn-primary" download style="font-size: 0.9rem; padding: 12px 24px; display: flex; align-items: center; gap: 8px;">
+                Download Resume
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><path d="M12 18v-6"/><path d="M9 15l3 3 3-3"/></svg>
+              </a>
+            </div>
+            <div class="cv-timeline" style="margin-bottom: 48px; border-color: transparent;">
+              <p class="cv-desc" style="font-size: 1rem; padding-left: 0;">
+                Aspiring UI/UX Designer and Full-Stack Developer currently pursuing a Bachelor of Science in Information Technology at the Polytechnic University of the Philippines. Creative and detail-oriented with experience designing and developing web and mobile applications from concept to implementation. Skilled in Figma, HTML, CSS, Java, PHP, Python, and Adobe Photoshop. Passionate about creating intuitive, visually appealing, and user-centered digital experiences through effective branding, layout design, functionality, and usability principles. Recognized for academic excellence as a Dean's Lister and President's Lister, with proven ability to independently manage design and development projects.
+              </p>
+            </div>
+
+            <!-- Education -->
+            <h3 class="cv-title">Education</h3>
+            <div class="cv-timeline" style="margin-bottom: 48px;">
+              <div class="cv-item">
+                <h4 class="cv-role">Bachelor of Science in Information Technology</h4>
+                <p class="cv-company">Polytechnic University of the Philippines <span class="cv-date">2024 – Present</span></p>
+                <ul class="cv-desc-list">
+                  <li>Expected Graduation: 2028</li>
+                  <li>President's Lister – 2nd Year, 1st Semester</li>
+                  <li>President's Lister – 1st Year, 2nd Semester</li>
+                  <li>Dean's Lister – 1st Year, 1st Semester</li>
+                </ul>
+              </div>
+              
+              <div class="cv-item">
+                <h4 class="cv-role">STEM Strand</h4>
+                <p class="cv-company">Malvar Senior High School <span class="cv-date">2022 – 2024</span></p>
+                <ul class="cv-desc-list">
+                  <li>Graduated With Honors</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Project Experience -->
+            <h3 class="cv-title">Project Experience</h3>
+            <div class="cv-timeline" style="margin-bottom: 48px;">
+              <div class="cv-item">
+                <h4 class="cv-role">UI/UX Designer &amp; Full-Stack Developer</h4>
+                <p class="cv-company">SariSaLasa E-Commerce Website <span class="cv-date">Solo Project</span></p>
+                <ul class="cv-desc-list" style="list-style: disc; padding-left: 20px;">
+                  <li>Designed wireframes, user flows, and high-fidelity mockups using Figma to create an intuitive online ordering experience.</li>
+                  <li>Developed front-end and back-end functionalities using HTML, CSS, and Java to support e-commerce operations.</li>
+                  <li>Created branding, visual layouts, and navigation structures that improved usability and user engagement.</li>
+                  <li>Implemented a food randomizer feature that helps customers choose meals when undecided.</li>
+                  <li>Managed the complete design and development lifecycle independently from concept to implementation and testing.</li>
+                </ul>
+              </div>
+              
+              <div class="cv-item">
+                <h4 class="cv-role">UI/UX Designer &amp; Full-Stack Developer</h4>
+                <p class="cv-company">Sip &amp; Slice Cafe Mobile Application &amp; Website <span class="cv-date">Solo Project</span></p>
+                <ul class="cv-desc-list" style="list-style: disc; padding-left: 20px;">
+                  <li>Designed wireframes, high-fidelity mockups, and interactive prototypes using Figma to establish a cohesive user experience.</li>
+                  <li>Developed front-end and back-end components for a cafe website and mobile application, transforming design concepts into functional products.</li>
+                  <li>Applied responsive design principles to improve accessibility and usability across multiple devices.</li>
+                  <li>Organized branding, typography, spacing, and visual hierarchy to create a consistent and engaging user interface.</li>
+                  <li>Managed the complete design and development process independently from concept to implementation.</li>
+                </ul>
+              </div>
+
+              <div class="cv-item">
+                <h4 class="cv-role">UI/UX Designer &amp; Full-Stack Developer</h4>
+                <p class="cv-company">Qydentra Dental Clinic Website <span class="cv-date">Team Project</span></p>
+                <ul class="cv-desc-list" style="list-style: disc; padding-left: 20px;">
+                  <li>Collaborated with a four-member team to design and develop a dental clinic website.</li>
+                  <li>Designed user-centered interfaces and layouts that improved navigation and visual clarity.</li>
+                  <li>Developed front-end and back-end website features to support project requirements and functionality.</li>
+                  <li>Contributed branding and visual design elements to maintain a professional healthcare-focused appearance.</li>
+                </ul>
+              </div>
+
+              <div class="cv-item">
+                <h4 class="cv-role">UI/UX Designer &amp; Full-Stack Developer</h4>
+                <p class="cv-company">Magma Madness Game Website <span class="cv-date">Team Project</span></p>
+                <ul class="cv-desc-list" style="list-style: disc; padding-left: 20px;">
+                  <li>Collaborated with a five-member team to design and develop a website supporting a game project.</li>
+                  <li>Created interface layouts and visual elements that enhanced user engagement and accessibility.</li>
+                  <li>Developed front-end and back-end website components to support project functionality.</li>
+                  <li>Applied responsive design principles to ensure a consistent user experience across devices.</li>
+                </ul>
+              </div>
+
+              <div class="cv-item">
+                <h4 class="cv-role">System Developer</h4>
+                <p class="cv-company">Automated Attendance Penalty System <span class="cv-date">Academic Project</span></p>
+                <ul class="cv-desc-list" style="list-style: disc; padding-left: 20px;">
+                  <li>Engineered an automated attendance tracking and penalty management system to streamline monitoring.</li>
+                  <li>Replaced manual logging with a digital solution, improving accuracy and reducing administrative workload.</li>
+                  <li>Implemented real-time tracking, automated penalty calculations for tardiness, and comprehensive reporting.</li>
+                </ul>
+              </div>
+
+              <div class="cv-item">
+                <h4 class="cv-role">UI/UX Designer</h4>
+                <p class="cv-company">PS5 Feature Showcase Prototype <span class="cv-date">Academic Project</span></p>
+                <ul class="cv-desc-list" style="list-style: disc; padding-left: 20px;">
+                  <li>Designed an interactive prototype focusing on the PlayStation 5 to showcase its standout features.</li>
+                  <li>Built high-fidelity mockups highlighting the console's dynamic UI, game library, and sleek interface.</li>
+                  <li>Emphasized smooth transitions, responsive elements, and a premium user experience.</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Organizations & Certifications -->
+            <h3 class="cv-title">Certifications &amp; Involvement</h3>
+            <div class="cv-timeline" style="margin-bottom: 48px;">
+              <div class="cv-item">
+                <h4 class="cv-role">Cisco Networking Basics Certification</h4>
+                <p class="cv-company">Cisco Networking Academy</p>
+                <p class="cv-desc">Completed foundational networking training covering network concepts, connectivity, infrastructure, and networking fundamentals.</p>
+              </div>
+              
+              <div class="cv-item">
+                <h4 class="cv-role">Publication Committee Member</h4>
+                <p class="cv-company">Polytechnic University of the Philippines</p>
+                <p class="cv-desc">Assisted in publication-related activities and supported student initiatives through collaborative participation.</p>
+              </div>
+
+              <div class="cv-item">
+                <h4 class="cv-role">Laboratory Operations and Maintenance Member</h4>
+                <p class="cv-company">Polytechnic University of the Philippines</p>
+                <p class="cv-desc">Supported laboratory operations and contributed to maintaining an organized learning environment.</p>
+              </div>
+            </div>
+
+            <!-- Skills Summary -->
+            <h3 class="cv-title">Skills</h3>
+            <div class="row g-4 ps-md-4 mt-2">
+              <div class="col-md-6">
+                <h5 class="cv-company mb-3" style="font-weight: 700; color: var(--text);">UI/UX &amp; Graphic Design</h5>
+                <ul class="project-tags">
+                  <li class="tag">Figma</li>
+                  <li class="tag">Wireframing</li>
+                  <li class="tag">Prototyping</li>
+                  <li class="tag">UI/UX Design</li>
+                  <li class="tag">Responsive Web Design</li>
+                  <li class="tag">Information Architecture</li>
+                  <li class="tag">Adobe Photoshop</li>
+                  <li class="tag">Branding &amp; Logos</li>
+                  <li class="tag">Typography &amp; Layout</li>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <h5 class="cv-company mb-3" style="font-weight: 700; color: var(--text);">Development &amp; Tools</h5>
+                <ul class="project-tags">
+                  <li class="tag">HTML / CSS</li>
+                  <li class="tag">Java / PHP / Python</li>
+                  <li class="tag">C++ / C#</li>
+                  <li class="tag">Full-Stack Development</li>
+                  <li class="tag">Visual Studio</li>
+                  <li class="tag">Kodular</li>
+                  <li class="tag">Blender</li>
+                  <li class="tag">GitHub</li>
+                  <li class="tag">Cisco Networking</li>
+                </ul>
+              </div>
+            </div>
+
+          </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span class="footer-logo">DML<span>.</span></span>
+      <p class="footer-tag">Intuition, Engineered.</p>
+      <p class="footer-copy">© 2025 Donna Mae Lat. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+  <script src="../assets/js/script.js"></script>
+</body>
+</html>

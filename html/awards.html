@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Awards — Donna Mae Lat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <style>
+    .awards-section { padding: 120px 0; min-height: calc(100vh - 200px); }
+    .award-card {
+      background: var(--bg-glass);
+      backdrop-filter: var(--blur);
+      -webkit-backdrop-filter: var(--blur);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      box-shadow: var(--shadow-low);
+      margin-bottom: 24px;
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      transition: transform .3s ease, box-shadow .3s ease;
+    }
+    .award-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-mid);
+    }
+    .award-icon {
+      font-size: 3rem;
+      background: var(--bg-2);
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .award-info { flex-grow: 1; }
+    .award-title { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .award-org { font-size: 1rem; color: var(--accent); font-weight: 600; margin-bottom: 8px; }
+    .award-desc { font-size: .95rem; color: var(--text-mid); line-height: 1.6; margin: 0; }
+    @media (max-width: 768px) {
+      .award-card { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="about.html" class="nav-logo">
+        <img src="../assets/img/logo.png" alt="DML Logo" class="nav-logo-img">
+        <span>DML<span class="nav-logo-dot">.</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="about.html">About</a></li>
+        <li><a href="cv.html">CV</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="awards.html" class="active">Awards</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <button class="nav-hamburger" id="hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile nav overlay -->
+  <div class="mobile-nav" id="mobileNav">
+    <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">✕</button>
+    <ul>
+      <li><a href="about.html" class="mob-link">About</a></li>
+      <li><a href="cv.html" class="mob-link">CV</a></li>
+      <li><a href="projects.html" class="mob-link">Projects</a></li>
+      <li><a href="awards.html" class="mob-link">Awards</a></li>
+      <li><a href="contact.html" class="mob-link">Contact</a></li>
+    </ul>
+  </div>
+
+  <div style="padding-top: 68px;"></div>
+
+  <!-- Awards Section -->
+  <section class="projects" id="awards">
+    <div class="container">
+      <div class="section-header text-start reveal-bottom">
+        <p class="section-eyebrow">Recognition</p>
+        <h2 class="section-heading">Honors &amp; <em>Awards.</em></h2>
+      </div>
+
+      <div class="projects-fan" id="awardsFan">
+
+        <!-- Award 1 (Span 8) -->
+        <div class="bento-1 project-card-wrap">
+          <div class="project-card h-100 reveal-bottom" data-index="0">
+          <div class="project-card-img">
+            <div id="pokeCarousel" class="carousel slide" data-bs-ride="carousel" style="height: 100%;">
+              <div class="carousel-inner" style="height: 100%;">
+                <div class="carousel-item active" style="height: 100%;">
+                  <img src="../assets/img/pokebanners.jpg" class="d-block w-100" alt="PokéBanner Champion 1" style="height: 100%; object-fit: cover;">
+                </div>
+                <div class="carousel-item" style="height: 100%;">
+                  <img src="../assets/img/597833559_2219175991911160_6248614041665531355_n.jpg" class="d-block w-100" alt="PokéBanner Champion 2" style="height: 100%; object-fit: cover;">
+                </div>
+              </div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#pokeCarousel" data-bs-slide="prev" style="background: linear-gradient(90deg, rgba(0,0,0,0.5), transparent); border: none;">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#pokeCarousel" data-bs-slide="next" style="background: linear-gradient(-90deg, rgba(0,0,0,0.5), transparent); border: none;">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+          </div>
+          <div class="project-card-body">
+            <div class="project-tags">
+              <span class="tag">Champion</span>
+              <span class="tag">Design</span>
+            </div>
+            <h3 class="project-title">PokéBanner Competition</h3>
+            <p class="project-desc">Created a championship-winning banner design through effective branding, visual hierarchy, and graphic design execution.</p>
+          </div>
+          </div>
+        </div>
+
+        <!-- Award 2 (Span 4) -->
+        <div class="bento-2 project-card-wrap">
+          <div class="project-card h-100 reveal-bottom" style="--delay:.15s" data-index="1">
+          <div class="project-card-img">
+            <img src="../assets/img/best speaker debate picture 1.png" alt="Best Speaker" style="width: 100%; height: 100%; object-fit: cover;" />
+          </div>
+          <div class="project-card-body">
+            <div class="project-tags">
+              <span class="tag">Award</span>
+              <span class="tag">Debate</span>
+            </div>
+            <h3 class="project-title">Best Speaker Award</h3>
+            <p class="project-desc">Demonstrated strong communication, critical thinking, and argumentation skills during a debate competition.</p>
+          </div>
+          </div>
+        </div>
+
+        <!-- Award 3 (Span 4) -->
+        <div class="bento-2 project-card-wrap">
+          <div class="project-card h-100 reveal-bottom" style="--delay:.25s" data-index="2">
+          <div class="project-card-img">
+            <img src="../assets/img/certification of recognition for publication.jpg" alt="Publication Recognition" style="width: 100%; height: 100%; object-fit: cover;" />
+          </div>
+          <div class="project-card-body">
+            <div class="project-tags">
+              <span class="tag">Recognition</span>
+              <span class="tag">PUP</span>
+            </div>
+            <h3 class="project-title">Publication Recognition</h3>
+            <p class="project-desc">Received certification for contributions and dedicated participation in publication-related activities and student initiatives.</p>
+          </div>
+          </div>
+        </div>
+
+        <!-- Award 4 (Span 4) -->
+        <div class="bento-2 project-card-wrap">
+          <div class="project-card h-100 reveal-bottom" style="--delay:.35s" data-index="3">
+          <div class="project-card-img">
+            <img src="../assets/img/presidents lister banner and deans lister.png" alt="President's Lister Banner" style="width: 100%; height: 100%; object-fit: cover;" />
+          </div>
+          <div class="project-card-body">
+            <div class="project-tags">
+              <span class="tag">Academic</span>
+              <span class="tag">PUP</span>
+            </div>
+            <h3 class="project-title">President's Lister</h3>
+            <p class="project-desc">Recognized for outstanding academic performance during multiple semesters at the Polytechnic University of the Philippines.</p>
+          </div>
+          </div>
+        </div>
+
+        <!-- Award 5 (Span 4) -->
+        <div class="bento-2 project-card-wrap">
+          <div class="project-card h-100 reveal-bottom" style="--delay:.45s" data-index="4">
+          <div class="project-card-img">
+            <img src="../assets/img/presidents lister banner and deans lister.png" alt="Dean's Lister Banner" style="width: 100%; height: 100%; object-fit: cover;" />
+          </div>
+          <div class="project-card-body">
+            <div class="project-tags">
+              <span class="tag">Academic</span>
+              <span class="tag">PUP</span>
+            </div>
+            <h3 class="project-title">Dean's Lister</h3>
+            <p class="project-desc">Consistently maintained high academic standing and excellence in Information Technology studies.</p>
+          </div>
+          </div>
+        </div>
+
+        <!-- Award 6 (Span 8 Centered) -->
+        <div class="bento-7 project-card-wrap">
+          <div class="project-card h-100 reveal-bottom" style="--delay:.55s" data-index="5">
+          <div class="project-card-img">
+            <img src="../assets/img/cisco certification.jpg" alt="Cisco Networking Basics Certification" style="width: 100%; height: 100%; object-fit: cover;" />
+          </div>
+          <div class="project-card-body">
+            <div class="project-tags">
+              <span class="tag">Certification</span>
+              <span class="tag">Cisco</span>
+            </div>
+            <h3 class="project-title">Cisco Networking Basics</h3>
+            <p class="project-desc">Completed foundational networking training covering network concepts, connectivity, infrastructure, and networking fundamentals at Cisco Networking Academy.</p>
+          </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Project Modal -->
+  <div class="modal fade" id="projectModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content" style="background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg);">
+        <div class="modal-header" style="border-bottom: 1px solid var(--border);">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body pt-0 px-md-5 pb-5">
+          <div id="modalImageContainer" style="width: 100%; height: 300px; margin-bottom: 24px; border-radius: var(--radius-sm); overflow: hidden; background: var(--bg-2);"></div>
+          <div class="project-tags mb-3" id="modalTags"></div>
+          <h2 class="project-title fs-2 mb-4" id="modalTitle">Project Title</h2>
+          <div class="project-desc fs-6 text-dark opacity-75 lh-lg" id="modalDesc">Project description goes here.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span class="footer-logo">DML<span>.</span></span>
+      <p class="footer-tag">Intuition, Engineered.</p>
+      <p class="footer-copy">© 2025 Donna Mae Lat. All rights reserved.</p>
+      <p class="footer-copy" style="font-size: 0.75rem; margin-top: 8px; opacity: 0.7;">* Banner image for President's Lister & Dean's Lister adapted from <a href="https://connect-assets.prosple.com/cdn/ff/4k2gqP4DryUcum2HrAOVxOEZVRlOf5GDf_aEuFtWHvY/1673415913/public/2023-01/Polytechnic%20University-%20banner.jpg" target="_blank" style="text-decoration: underline;">Prosple / PUP</a>.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+  <script src="../assets/js/script.js"></script>
+</body>
+</html>

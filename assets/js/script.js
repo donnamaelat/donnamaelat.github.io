@@ -83,15 +83,32 @@ spawnParticles();
 /* ── SCROLL REVEAL ───────────────────────────────── */
 function initReveal() {
   const els = document.querySelectorAll('.reveal-bottom, .reveal-left, .reveal-right');
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('revealed');
-        obs.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
-  els.forEach(el => obs.observe(el));
+  
+  els.forEach(el => {
+    // If it's in the hero, reveal it immediately
+    if (el.closest('.hero-content') || el.closest('#heroLeft')) {
+      setTimeout(() => el.classList.add('revealed'), 100);
+    } else {
+      // Create a dummy tracker so off-screen translated elements still trigger correctly
+      const tracker = document.createElement('div');
+      tracker.style.position = 'absolute';
+      tracker.style.width = '1px';
+      tracker.style.height = '1px';
+      tracker.style.pointerEvents = 'none';
+      tracker.style.visibility = 'hidden';
+      // Insert tracker just before the element
+      el.parentNode.insertBefore(tracker, el);
+      
+      const obs = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          el.classList.add('revealed');
+          obs.disconnect();
+        }
+      }, { threshold: 0, rootMargin: '0px 0px -40px 0px' });
+      
+      obs.observe(tracker);
+    }
+  });
 }
 initReveal();
 

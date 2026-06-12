@@ -509,8 +509,9 @@ ul { list-style: none; }
 .grid-center-right {
   top: 50%; right: 0;
   transform: translateY(-50%);
-  mask-image: radial-gradient(circle at center right, black 15%, transparent 70%);
-  -webkit-mask-image: radial-gradient(circle at center right, black 15%, transparent 70%);
+  height: 120vh;
+  mask-image: radial-gradient(ellipse at center right, black 10%, transparent 60%);
+  -webkit-mask-image: radial-gradient(ellipse at center right, black 10%, transparent 60%);
 }
 .physics-container {
   position: relative;

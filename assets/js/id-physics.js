@@ -137,6 +137,14 @@ document.addEventListener("DOMContentLoaded", () => {
     mouse.button = -1; // Force release the card no matter where the mouse is!
   });
 
+  // Prevent browser's native text/image drag logic from interfering with our physics dragging
+  idCardDom.addEventListener('dragstart', (e) => e.preventDefault());
+  idCardDom.addEventListener('mousedown', () => {
+    if (window.getSelection) {
+      window.getSelection().removeAllRanges();
+    }
+  });
+
   Composite.add(world, mouseConstraint);
 
   // Keep the mouse in sync with rendering
@@ -156,7 +164,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const maxDist = lanyardLength * segmentLength;
     
     if (distance < maxDist) {
-      cardConstraint.length = distance; // Slack string: Zero force applied, letting it drop!
+      if (mouseConstraint.body === cardBody) {
+        cardConstraint.length = distance; 
+      } else {
+        cardConstraint.length = Math.min(maxDist, cardConstraint.length + 20);
+      }
     } else {
       // SHOCK ABSORBER: If the string was previously slack, this is the exact frame it snaps!
       // We kill 60% of its kinetic energy instantly to prevent violent over-swaying!
@@ -242,7 +254,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Combine them to create the perfect control point for the curve
     const cpX = midX + bowX;
-    const cpY = midY + bowY + (slack * 1.5);
+    let cpY = midY + bowY + (slack * 1.5);
+
+    // FIX: Never let the string bow upwards past the anchor point! 
+    // If it tries to go up, reflect it downwards so it always sags naturally.
+    if (cpY < anchorY) {
+      cpY = anchorY + Math.abs(cpY - anchorY);
+    }
 
     // Function to draw the exact curve with varying styles
     const drawLace = (width, color, shadow = false) => {

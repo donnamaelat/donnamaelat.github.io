@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
   engine.gravity.y = 3.5; // Slightly reduced from 5.0 so it's not aggressively violent
 
   // Set up rendering to draw the lace
-  const width = container.clientWidth;
+  let width = container.clientWidth;
   const height = container.clientHeight; // Usually 500px based on CSS
 
   // CRITICAL FIX: The canvas cuts off the lace if dragged outside the container.
@@ -61,14 +61,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const containerTop = rect.top + window.scrollY;
   
   // Anchor point (top center), offset by our padding!
-  const anchorX = OVERFLOW_PADDING + width / 2;
-  // Move anchor to the top of the document (y = 0)
-  const anchorY = OVERFLOW_PADDING - containerTop;
+  let anchorX = OVERFLOW_PADDING + width / 2;
+  // Move anchor to the top of the document (y = 0) on desktop, or slightly above container on stacked layout
+  const isStacked = window.innerWidth < 992;
+  let anchorY = isStacked ? (OVERFLOW_PADDING - 40) : (OVERFLOW_PADDING - containerTop);
   
   // Calculate how long the lanyard needs to be to hang at the original spot
   const targetRestingY = OVERFLOW_PADDING + 60; // Raised even further up per user request (from 100)
   const totalLaceLength = targetRestingY - anchorY;
   const lanyardLength = totalLaceLength / segmentLength;
+  let maxLaceLength = totalLaceLength;
 
   // Navy Blue Lanyard color to match the brand
   const maroonColor = '#0B1B4A';
@@ -78,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const cardHeight = 375;
   const cardBody = Bodies.rectangle(
     anchorX, 
-    anchorY + (lanyardLength * segmentLength) + (cardHeight/2), 
+    anchorY + maxLaceLength + (cardHeight/2), 
     cardWidth, 
     cardHeight, 
     { 
@@ -97,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
     pointA: { x: anchorX, y: anchorY }, // Attached directly to the ceiling anchor
     bodyB: cardBody,
     pointB: { x: 0, y: -cardHeight/2 + 5 }, // Attach near the top edge so the clip peeks out from behind!
-    length: lanyardLength * segmentLength, // Exact length of the original lace
+    length: maxLaceLength, // Exact length of the original lace
     stiffness: 1, // Perfectly rigid pendulum
     damping: 0, // CRITICAL FIX: Zero damping so it swings back down instantly!
     render: { visible: false }
@@ -161,7 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const dx = attachmentX - anchorX;
     const dy = attachmentY - anchorY;
     const distance = Math.sqrt(dx*dx + dy*dy);
-    const maxDist = lanyardLength * segmentLength;
+    const maxDist = maxLaceLength;
     
     if (distance < maxDist) {
       if (mouseConstraint.body === cardBody) {
@@ -249,7 +251,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const dx = attachmentPoint.x - anchorX;
     const dy = attachmentPoint.y - anchorY;
     const dist = Math.sqrt(dx*dx + dy*dy);
-    const maxDist = lanyardLength * segmentLength;
+    const maxDist = maxLaceLength;
     const slack = Math.max(0, maxDist - dist); 
 
     // Combine them to create the perfect control point for the curve
@@ -283,20 +285,24 @@ document.addEventListener("DOMContentLoaded", () => {
       context.stroke();
     };
 
+    // Scale lanyard thickness dynamically for better mobile/responsive appearance
+    const isStackedMode = window.innerWidth < 992;
+    const ts = isStackedMode ? 0.6 : 0.8; // thickness scale
+
     // 1. Draw 3D Drop Shadow
-    drawLace(40, 'rgba(0,0,0,0.1)', true);
+    drawLace(40 * ts, 'rgba(0,0,0,0.1)', true);
     
     // 2. Draw Dark Outer Edge (Volume)
-    drawLace(40, '#0d0d0d');
+    drawLace(40 * ts, '#0d0d0d');
     
     // 3. Draw Main Black Fabric
-    drawLace(36, '#1b1b1b');
+    drawLace(36 * ts, '#1b1b1b');
     
     // 4. Draw Inner Fabric Highlight (Simulating rounded fabric lighting)
-    drawLace(18, '#404040');
+    drawLace(18 * ts, '#404040');
     
     // 5. Draw Tiny Specular Sheen (Nylon reflection)
-    drawLace(5, 'rgba(255,255,255,0.10)');
+    drawLace(5 * ts, 'rgba(255,255,255,0.10)');
 
     // --- DRAW REALISTIC METAL CLIP ---
     context.shadowColor = 'rgba(0,0,0,0.5)';
@@ -346,7 +352,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Handle window resize gracefully
   window.addEventListener('resize', () => {
-    // In a full implementation, you'd update anchor position
-    // For now, we'll keep it simple
+    const newWidth = container.clientWidth;
+    const newRect = container.getBoundingClientRect();
+    const newContainerTop = newRect.top + window.scrollY;
+    
+    const isStackedMode = window.innerWidth < 992;
+    const newAnchorX = OVERFLOW_PADDING + newWidth / 2;
+    const newAnchorY = isStackedMode ? (OVERFLOW_PADDING - 40) : (OVERFLOW_PADDING - newContainerTop);
+    
+    const newLaceLength = targetRestingY - newAnchorY;
+    
+    // Shift card body along with the anchor to avoid violent snaps
+    const shiftX = newAnchorX - anchorX;
+    const shiftY = newAnchorY - anchorY;
+    Matter.Body.setPosition(cardBody, {
+      x: cardBody.position.x + shiftX,
+      y: cardBody.position.y + shiftY
+    });
+    Matter.Body.setVelocity(cardBody, { x: 0, y: 0 });
+    
+    // Update active variables
+    width = newWidth;
+    anchorX = newAnchorX;
+    anchorY = newAnchorY;
+    maxLaceLength = newLaceLength;
+    cardConstraint.length = newLaceLength;
+    
+    // Update constraint pointA
+    cardConstraint.pointA.x = anchorX;
+    cardConstraint.pointA.y = anchorY;
+    
+    // Update render width/bounds
+    const pr = window.devicePixelRatio || 1;
+    render.options.width = width + OVERFLOW_PADDING * 2;
+    render.canvas.width = (width + OVERFLOW_PADDING * 2) * pr;
+    render.canvas.style.width = (width + OVERFLOW_PADDING * 2) + 'px';
   });
 });

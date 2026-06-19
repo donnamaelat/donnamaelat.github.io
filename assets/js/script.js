@@ -37,26 +37,56 @@ const SKILLS = {
 
 // Dynamically load the shared navbar and initialize scroll/hamburger listeners
 async function loadNavbar() {
+  const defaultNavbarHTML = `
+    <nav class="navbar" id="navbar">
+      <div class="nav-inner">
+        <a href="index.html" class="nav-logo">
+          <img src="assets/img/logo.png" alt="DML Logo" class="nav-logo-img">
+          <span>DML<span class="nav-logo-dot">.</span></span>
+        </a>
+        <ul class="nav-links">
+          <li><a href="index.html">About</a></li>
+          <li><a href="cv.html">CV</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="awards.html">Awards</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <button class="nav-hamburger" id="hamburger" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </nav>
+
+    <div class="mobile-nav" id="mobileNav">
+      <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">✕</button>
+      <ul>
+        <li><a href="index.html" class="mob-link">About</a></li>
+        <li><a href="cv.html" class="mob-link">CV</a></li>
+        <li><a href="projects.html" class="mob-link">Projects</a></li>
+        <li><a href="awards.html" class="mob-link">Awards</a></li>
+        <li><a href="contact.html" class="mob-link">Contact</a></li>
+      </ul>
+    </div>
+  `;
+
   try {
+    let htmlText;
+    
     // Check if the site is running locally via file:// protocol (CORS restriction)
     if (window.location.protocol === 'file:') {
-      console.warn("Dynamic navbar loading via fetch() is restricted by browsers when opening files directly using file:// protocol. Please use a local web server.");
-      const placeholder = document.getElementById('navbar-placeholder');
-      if (placeholder) {
-        placeholder.innerHTML = `
-          <div style="background: rgba(220, 53, 69, 0.1); border: 1.5px dashed #c0553a; color: #c0553a; padding: 20px; margin: 20px auto; max-width: 800px; border-radius: 8px; font-family: 'Inter', sans-serif; text-align: center; font-size: 0.95rem; line-height: 1.6;">
-            <strong style="display: block; font-size: 1.1rem; margin-bottom: 8px;">Local File Access (CORS Restriction)</strong>
-            The shared navbar cannot load because the website is opened directly from your file system (<code>file://</code>). 
-            To view the website correctly, please run it using a local web server (such as VS Code's <strong>Live Server</strong> extension, XAMPP, or by running <code>python -m http.server</code> in this folder).
-          </div>
-        `;
+      console.log("Running locally via file:// protocol. Using embedded navbar template to bypass CORS restriction.");
+      htmlText = defaultNavbarHTML;
+    } else {
+      try {
+        const response = await fetch('navbar.html');
+        if (!response.ok) throw new Error('Failed to load navbar');
+        htmlText = await response.text();
+      } catch (fetchError) {
+        console.warn("Failed to fetch navbar dynamically, using embedded fallback template:", fetchError);
+        htmlText = defaultNavbarHTML;
       }
-      return;
     }
 
-    const response = await fetch('navbar.html');
-    if (!response.ok) throw new Error('Failed to load navbar');
-    const htmlText = await response.text();
     const placeholder = document.getElementById('navbar-placeholder');
     if (placeholder) {
       // Create a temporary container to parse HTML string

@@ -416,7 +416,7 @@ ul { list-style: none; }
   50% { transform: translate(-50%, 8px); }
 }
 
-@media (max-width: 900px), (max-height: 780px) {
+@media (max-width: 991px), (max-height: 780px) {
   .hero-scroll-indicator {
     display: none;
   }
@@ -1440,7 +1440,7 @@ ul { list-style: none; }
   transform: translate(0,0) !important;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 991px) {
   .hero-content {
     grid-template-columns: 1fr;
     text-align: center;

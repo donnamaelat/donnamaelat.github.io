@@ -1,6 +1,3 @@
-/* --- DML PORTFOLIO SCRIPT --- */
-
-/* ── SKILL DATA ──────────────────────────────────── */
 const SKILLS = {
   "HTML5": { desc: "Semantic markup, accessibility best practices, structure-first thinking.", level: 92, category: "Frontend" },
   "CSS3": { desc: "Custom properties, Grid, Flexbox, animations. Precise and expressive CSS.", level: 90, category: "Frontend" },
@@ -22,97 +19,182 @@ const SKILLS = {
   "Graphic Design": { desc: "Creating visual content to communicate messages effectively.", level: 82, category: "Design" },
   "Adobe Photoshop": { desc: "Image editing, compositing, and creating digital assets.", level: 80, category: "Design" },
   "Adobe Illustrator": { desc: "Vector graphics creation including logos, icons, and illustrations.", level: 75, category: "Design" },
-  "ERD Modeling": { desc: "Creating Entity-Relationship Diagrams to visualize data architecture.", level: 85, category: "Backend" }
+  "ERD Modeling": { desc: "Creating Entity-Relationship Diagrams to visualize data architecture.", level: 85, category: "Backend" },
+  "Java": { desc: "Object-oriented language used for developing desktop, web, and mobile software.", level: 80, category: "Backend" },
+  "Python": { desc: "High-level language known for readability, backend scripting, and versatility.", level: 75, category: "Backend" },
+  "C++": { desc: "Systems programming language used for high-performance apps and low-level control.", level: 70, category: "Backend" },
+  "C#": { desc: "Modern, object-oriented language for enterprise applications, desktop apps, and games.", level: 70, category: "Backend" },
+  "Blender": { desc: "Open-source 3D software for modeling, rendering, animation, and asset creation.", level: 75, category: "Design" },
+  "GitHub": { desc: "Web-based platform for hosting Git repositories, collaboration, and CI/CD pipelines.", level: 82, category: "DevTools" },
+  "Kodular": { desc: "App-creator platform for building native Android applications visually.", level: 85, category: "DevTools" },
+  "Visual Studio": { desc: "Integrated development environment (IDE) for compiling C++, C#, and managing developer workflows.", level: 80, category: "DevTools" },
+  "Cisco Packet Tracer": { desc: "Network simulation tool used to model, configure, and troubleshoot network architectures.", level: 82, category: "Networking" },
+  "phpMyAdmin": { desc: "Web-based interface for administering MySQL databases, managing tables, and running queries.", level: 85, category: "Backend" },
+  "Bootstrap": { desc: "Front-end framework featuring a responsive grid system and pre-styled UI components.", level: 85, category: "Frontend" },
+  "XAMPP": { desc: "Local development server stack containing Apache, MySQL, and PHP for testing web applications.", level: 80, category: "DevTools" }
 };
 
-/* ── NAVBAR SCROLL ───────────────────────────────── */
-const navbar = document.getElementById('navbar');
-window.addEventListener('scroll', () => {
-  navbar.classList.toggle('scrolled', window.scrollY > 40);
-}, { passive: true });
 
-/* ── HAMBURGER ───────────────────────────────────── */
-const hamburger  = document.getElementById('hamburger');
-const mobileNav  = document.getElementById('mobileNav');
-const closeBtn   = document.getElementById('mobileNavClose');
-const mobLinks   = document.querySelectorAll('.mob-link');
-
-hamburger.addEventListener('click', () => mobileNav.classList.add('open'));
-closeBtn.addEventListener('click',  () => mobileNav.classList.remove('open'));
-mobLinks.forEach(l => l.addEventListener('click', () => mobileNav.classList.remove('open')));
-
-/* ── PARALLAX ────────────────────────────────────── */
-const parallaxBg   = document.getElementById('parallaxBg');
-const heroLeft     = document.getElementById('heroLeft');
-const heroRight    = document.getElementById('heroRight');
-
-let ticking = false;
-window.addEventListener('scroll', () => {
-  if (!ticking) {
-    requestAnimationFrame(() => {
-      const y = window.scrollY;
-      if (parallaxBg) parallaxBg.style.transform = `translateY(${y * 0.35}px)`;
-      if (heroLeft)   heroLeft.style.transform   = `translateY(${y * 0.12}px)`;
-      if (heroRight)  heroRight.style.transform  = `translateY(${y * 0.07}px)`;
-      ticking = false;
-    });
-    ticking = true;
-  }
-}, { passive: true });
-
-/* ── PARTICLES ───────────────────────────────────── */
-function spawnParticles() {
-  const container = document.getElementById('particles');
-  if (!container) return;
-  for (let i = 0; i < 18; i++) {
-    const p = document.createElement('div');
-    p.className = 'particle';
-    const size = 3 + Math.random() * 6;
-    p.style.cssText = `
-      width:${size}px;height:${size}px;
-      left:${Math.random()*100}%;
-      top:${Math.random()*100}%;
-      --dur:${5+Math.random()*6}s;
-      --delay:${Math.random()*6}s;
-    `;
-    container.appendChild(p);
-  }
-}
-spawnParticles();
-
-/* ── SCROLL REVEAL ───────────────────────────────── */
-function initReveal() {
-  const els = document.querySelectorAll('.reveal-bottom, .reveal-left, .reveal-right');
-  
-  els.forEach(el => {
-    // If it's in the hero, reveal it immediately
-    if (el.closest('.hero-content') || el.closest('#heroLeft')) {
-      setTimeout(() => el.classList.add('revealed'), 100);
-    } else {
-      // Create a dummy tracker so off-screen translated elements still trigger correctly
-      const tracker = document.createElement('div');
-      tracker.style.position = 'absolute';
-      tracker.style.width = '1px';
-      tracker.style.height = '1px';
-      tracker.style.pointerEvents = 'none';
-      tracker.style.visibility = 'hidden';
-      // Insert tracker just before the element
-      el.parentNode.insertBefore(tracker, el);
-      
-      const obs = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting) {
-          el.classList.add('revealed');
-          obs.disconnect();
-        }
-      }, { threshold: 0, rootMargin: '0px 0px -40px 0px' });
-      
-      obs.observe(tracker);
+// Dynamically load the shared navbar and initialize scroll/hamburger listeners
+async function loadNavbar() {
+  try {
+    // Check if the site is running locally via file:// protocol (CORS restriction)
+    if (window.location.protocol === 'file:') {
+      console.warn("Dynamic navbar loading via fetch() is restricted by browsers when opening files directly using file:// protocol. Please use a local web server.");
+      const placeholder = document.getElementById('navbar-placeholder');
+      if (placeholder) {
+        placeholder.innerHTML = `
+          <div style="background: rgba(220, 53, 69, 0.1); border: 1.5px dashed #c0553a; color: #c0553a; padding: 20px; margin: 20px auto; max-width: 800px; border-radius: 8px; font-family: 'Inter', sans-serif; text-align: center; font-size: 0.95rem; line-height: 1.6;">
+            <strong style="display: block; font-size: 1.1rem; margin-bottom: 8px;">Local File Access (CORS Restriction)</strong>
+            The shared navbar cannot load because the website is opened directly from your file system (<code>file://</code>). 
+            To view the website correctly, please run it using a local web server (such as VS Code's <strong>Live Server</strong> extension, XAMPP, or by running <code>python -m http.server</code> in this folder).
+          </div>
+        `;
+      }
+      return;
     }
-  });
-}
-initReveal();
 
-/* ── KEYBOARD SKILL MODULE ───────────────────────── */
+    const response = await fetch('navbar.html');
+    if (!response.ok) throw new Error('Failed to load navbar');
+    const htmlText = await response.text();
+    const placeholder = document.getElementById('navbar-placeholder');
+    if (placeholder) {
+      // Create a temporary container to parse HTML string
+      const temp = document.createElement('div');
+      temp.innerHTML = htmlText;
+      
+      // Highlight the active page link based on the current filename
+      const path = window.location.pathname;
+      const filename = path.split('/').pop() || 'index.html';
+      
+      const navLinks = temp.querySelectorAll('.nav-links a, .mobile-nav a');
+      navLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        if (href === filename || (filename === '' && href === 'index.html')) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+
+      // Replace placeholder div directly with all child elements from temp
+      placeholder.replaceWith(...temp.childNodes);
+      
+      // Initialize scroll event listener
+      const navbar = document.getElementById('navbar');
+      window.addEventListener('scroll', () => {
+        if (navbar) navbar.classList.toggle('scrolled', window.scrollY > 40);
+      }, { passive: true });
+
+      // Initialize hamburger click event listeners
+      const hamburger  = document.getElementById('hamburger');
+      const mobileNav  = document.getElementById('mobileNav');
+      const closeBtn   = document.getElementById('mobileNavClose');
+      const mobLinks   = document.querySelectorAll('.mob-link');
+
+      if (hamburger && mobileNav) {
+        hamburger.addEventListener('click', () => mobileNav.classList.add('open'));
+      }
+      if (closeBtn && mobileNav) {
+        closeBtn.addEventListener('click',  () => mobileNav.classList.remove('open'));
+      }
+      if (mobLinks && mobileNav) {
+        mobLinks.forEach(l => l.addEventListener('click', () => mobileNav.classList.remove('open')));
+      }
+    }
+  } catch (error) {
+    console.error("Error loading navbar:", error);
+  }
+}
+
+loadNavbar();
+
+
+
+try {
+  const parallaxBg   = document.getElementById('parallaxBg');
+  const heroLeft     = document.getElementById('heroLeft');
+  const heroRight    = document.getElementById('heroRight');
+
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+        if (parallaxBg) parallaxBg.style.transform = `translateY(${y * 0.35}px)`;
+        if (heroLeft)   heroLeft.style.transform   = `translateY(${y * 0.12}px)`;
+        if (heroRight)  heroRight.style.transform  = `translateY(${y * 0.07}px)`;
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
+} catch (error) {
+  console.error("Error in PARALLAX:", error);
+}
+
+
+try {
+  function spawnParticles() {
+    const container = document.getElementById('particles');
+    if (!container) return;
+    for (let i = 0; i < 18; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const size = 3 + Math.random() * 6;
+      p.style.cssText = `
+        width:${size}px;height:${size}px;
+        left:${Math.random()*100}%;
+        top:${Math.random()*100}%;
+        --dur:${5+Math.random()*6}s;
+        --delay:${Math.random()*6}s;
+      `;
+      container.appendChild(p);
+    }
+  }
+  spawnParticles();
+} catch (error) {
+  console.error("Error in PARTICLES:", error);
+}
+
+
+try {
+  function initReveal() {
+    const els = document.querySelectorAll('.reveal-bottom, .reveal-left, .reveal-right');
+    
+    els.forEach(el => {
+      
+      if (el.closest('.hero-content') || el.closest('#heroLeft')) {
+        setTimeout(() => el.classList.add('revealed'), 100);
+      } else {
+        
+        const tracker = document.createElement('div');
+        tracker.style.position = 'absolute';
+        tracker.style.width = '1px';
+        tracker.style.height = '1px';
+        tracker.style.pointerEvents = 'none';
+        tracker.style.visibility = 'hidden';
+        
+        if (el.parentNode) el.parentNode.insertBefore(tracker, el);
+        
+        const obs = new IntersectionObserver((entries) => {
+          if (entries[0].isIntersecting) {
+            el.classList.add('revealed');
+            obs.disconnect();
+          }
+        }, { threshold: 0, rootMargin: '0px 0px -40px 0px' });
+        
+        obs.observe(tracker);
+      }
+    });
+  }
+  initReveal();
+} catch (error) {
+  console.error("Error in SCROLL REVEAL:", error);
+}
+
+
+try {
 const keyboard = document.getElementById('keyboard');
 if (keyboard) {
   const keys       = document.querySelectorAll('.key');
@@ -196,48 +278,86 @@ if (keyboard) {
   });
 
 }
+} catch (error) { console.error("Error in KEYBOARD SKILL MODULE:", error); }
 
-/* ── CONTACT FORM ────────────────────────────────── */
-const submitBtn  = document.getElementById('submitBtn');
-const formStatus = document.getElementById('formStatus');
 
-submitBtn && submitBtn.addEventListener('click', () => {
-  const name    = document.getElementById('name').value.trim();
-  const email   = document.getElementById('email').value.trim();
-  const message = document.getElementById('message').value.trim();
+try {
+const contactForm = document.getElementById('contactForm');
+const submitBtn   = document.getElementById('submitBtn');
+const formStatus  = document.getElementById('formStatus');
 
-  if (!name || !email || !message) {
-    formStatus.style.color = '#c0553a';
-    formStatus.textContent = 'Please fill in all fields.';
-    return;
-  }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    formStatus.style.color = '#c0553a';
-    formStatus.textContent = 'Please enter a valid email.';
-    return;
-  }
+if (contactForm) {
+  contactForm.addEventListener('submit', (e) => {
+    e.preventDefault();
 
-  submitBtn.textContent  = 'Sending…';
-  submitBtn.disabled     = true;
-  formStatus.textContent = '';
+    const name    = document.getElementById('name').value.trim();
+    const email   = document.getElementById('email').value.trim();
+    const message = document.getElementById('message').value.trim();
 
-  setTimeout(() => {
-    submitBtn.textContent  = 'Message Sent ✓';
-    formStatus.style.color = '#C8A96A';
-    formStatus.textContent = `Thanks, ${name}! I'll get back to you soon.`;
+    if (!name || !email || !message) {
+      formStatus.style.color = '#c0553a';
+      formStatus.textContent = 'Please fill in all fields.';
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      formStatus.style.color = '#c0553a';
+      formStatus.textContent = 'Please enter a valid email.';
+      return;
+    }
 
-    document.getElementById('name').value    = '';
-    document.getElementById('email').value   = '';
-    document.getElementById('message').value = '';
+    submitBtn.textContent  = 'Sending…';
+    submitBtn.disabled     = true;
+    formStatus.textContent = '';
 
-    setTimeout(() => {
+    fetch(contactForm.action, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: name,
+        email: email,
+        message: message
+      })
+    })
+    .then(response => {
+      if (response.ok) {
+        submitBtn.textContent  = 'Message Sent ✓';
+        formStatus.style.color = '#C8A96A';
+        formStatus.textContent = `Thank you, ${name}. Your message has been successfully sent. I will get back to you as soon as possible.`;
+
+        contactForm.reset();
+
+        setTimeout(() => {
+          submitBtn.textContent = 'Send Message';
+          submitBtn.disabled    = false;
+        }, 4000);
+      } else {
+        response.json().then(data => {
+          if (Object.hasOwnProperty.call(data, 'errors')) {
+            formStatus.textContent = data["errors"].map(error => error["message"]).join(", ");
+          } else {
+            formStatus.textContent = "Oops! There was a problem submitting your form";
+          }
+          formStatus.style.color = '#c0553a';
+          submitBtn.textContent = 'Send Message';
+          submitBtn.disabled = false;
+        });
+      }
+    })
+    .catch(error => {
+      formStatus.style.color = '#c0553a';
+      formStatus.textContent = "Oops! There was a problem submitting your form";
       submitBtn.textContent = 'Send Message';
-      submitBtn.disabled    = false;
-    }, 4000);
-  }, 1200);
-});
+      submitBtn.disabled = false;
+    });
+  });
+}
+} catch (error) { console.error("Error in CONTACT FORM:", error); }
 
-/* ── PROJECT CARD TILT ───────────────────────────── */
+
+try {
 document.querySelectorAll('.project-card').forEach(card => {
   card.addEventListener('mousemove', (e) => {
     const rect   = card.getBoundingClientRect();
@@ -256,24 +376,10 @@ document.querySelectorAll('.project-card').forEach(card => {
     card.style.transition = 'transform .5s cubic-bezier(0.16,1,0.3,1), box-shadow .35s ease';
   });
 });
+} catch (error) { console.error("Error in PROJECT CARD TILT:", error); }
 
-/* ── ACTIVE NAV LINK ON SCROLL ───────────────────── */
-const sections  = document.querySelectorAll('section[id]');
-const navLinksA = document.querySelectorAll('.nav-links a');
 
-const sectionObs = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      navLinksA.forEach(a => {
-        a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id);
-      });
-    }
-  });
-}, { threshold: 0.4 });
-
-sections.forEach(s => sectionObs.observe(s));
-
-/* ── PROJECT MODAL ───────────────────────────────── */
+try {
 const PROJECT_DATA = [
   {
     title: "SariSaLasa E-Commerce Website",
@@ -321,8 +427,8 @@ if (projectModalEl) {
 
   document.querySelectorAll('.project-link, .project-card-img').forEach((el) => {
     el.addEventListener('click', (e) => {
-      if (el.tagName === 'A' && el.getAttribute('target') === '_blank') return; // Allow external links to open normally
-      if (e.target.closest('.carousel-control-prev') || e.target.closest('.carousel-control-next')) return; // Allow carousel to work
+      if (el.tagName === 'A' && el.getAttribute('target') === '_blank') return; 
+      if (e.target.closest('.carousel-control-prev') || e.target.closest('.carousel-control-next')) return; 
       
       e.preventDefault();
       const card = e.target.closest('.project-card');
@@ -351,13 +457,12 @@ if (projectModalEl) {
         modalDesc.textContent = desc;
         modalTags.innerHTML = tagsHTML;
         
-        // Populate image in modal
         const imgContainer = card.querySelector('.project-card-img');
         const modalImgContainer = document.getElementById('modalImageContainer');
         if (imgContainer && modalImgContainer) {
+          modalImgContainer.classList.remove('zoomed'); 
           modalImgContainer.innerHTML = imgContainer.innerHTML;
           
-          // Fix carousel duplicate IDs so the modal's carousel works independently
           const carousel = modalImgContainer.querySelector('.carousel');
           if (carousel) {
             const newId = carousel.id + '-modal';
@@ -371,4 +476,64 @@ if (projectModalEl) {
       }
     });
   });
+
+  const modalImgContainer = document.getElementById('modalImageContainer');
+  if (modalImgContainer) {
+    modalImgContainer.style.cursor = 'zoom-in';
+    modalImgContainer.addEventListener('click', (e) => {
+      
+      if (e.target.closest('.carousel-control-prev') || e.target.closest('.carousel-control-next')) return;
+      modalImgContainer.classList.toggle('zoomed');
+      modalImgContainer.style.cursor = modalImgContainer.classList.contains('zoomed') ? 'zoom-out' : 'zoom-in';
+    });
+  }
 }
+} catch (error) { console.error("Error in PROJECT MODAL:", error); }
+
+// Force download for PDF file instead of opening it in a browser tab
+try {
+  const downloadBtn = document.getElementById('downloadResumeBtn');
+  if (downloadBtn) {
+    downloadBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      const link = this;
+      const originalContent = link.innerHTML;
+      
+      // Prevent double clicks and show loading feedback
+      link.style.pointerEvents = 'none';
+      link.style.opacity = '0.7';
+      link.innerHTML = 'Downloading...';
+      
+      fetch(link.href)
+        .then(response => {
+          if (!response.ok) throw new Error('Failed to fetch file');
+          return response.blob();
+        })
+        .then(blob => {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = link.getAttribute('download') || 'Lat, Donna Mae D. - resume.pdf';
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          window.URL.revokeObjectURL(url);
+        })
+        .catch(err => {
+          console.error('Download failed, falling back:', err);
+          // Fallback if fetch fails (e.g. cross-origin/local filesystem restrictions)
+          window.open(link.href, '_blank');
+        })
+        .finally(() => {
+          // Restore button state
+          link.style.pointerEvents = 'auto';
+          link.style.opacity = '1';
+          link.innerHTML = originalContent;
+        });
+    });
+  }
+} catch (error) {
+  console.error("Error in DOWNLOAD HANDLER:", error);
+}
+

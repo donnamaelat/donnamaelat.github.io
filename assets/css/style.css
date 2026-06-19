@@ -1,6 +1,5 @@
-/* --- DML PORTFOLIO STYLES --- */
 
-/* ── TOKENS ─────────────────────────────────────── */
+
 :root {
   --bg:          #FFFFFF;
   --bg-2:        #FAFBFC;
@@ -29,7 +28,6 @@
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* ── RESET ───────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; font-size: 16px; }
 body {
@@ -64,14 +62,12 @@ img { display: block; max-width: 100%; }
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
 
-/* ── CONTAINER ───────────────────────────────────── */
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 40px;
 }
 
-/* ── BUTTONS ─────────────────────────────────────── */
 .btn-primary {
   display: inline-flex;
   align-items: center;
@@ -152,7 +148,6 @@ ul { list-style: none; }
 
 .btn-full { width: 100%; justify-content: center; }
 
-/* ── SECTION SHARED ──────────────────────────────── */
 .section-eyebrow {
   font-size: .75rem;
   font-weight: 600;
@@ -184,7 +179,6 @@ ul { list-style: none; }
   margin-bottom: 56px;
 }
 
-/* --- NAVBAR --- */
 .navbar {
   position: fixed;
   top: 24px;
@@ -212,7 +206,7 @@ ul { list-style: none; }
 }
 .nav-inner {
   width: 100%;
-  max-width: 100%; /* Spreads the logo and links to the absolute opposite edges */
+  max-width: 100%; 
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -282,7 +276,6 @@ ul { list-style: none; }
   transition: .25s;
 }
 
-/* Mobile nav */
 .mobile-nav {
   position: fixed;
   inset: 0;
@@ -316,12 +309,11 @@ ul { list-style: none; }
   color: var(--text-mid);
 }
 
-/* --- HERO --- */
 .hero {
   min-height: 100vh;
   padding: 120px 40px 80px;
   position: relative;
-  overflow: visible; /* Changed from hidden so ID card isn't clipped */
+  overflow: visible; 
   display: flex;
   align-items: center;
   z-index: 100;
@@ -365,7 +357,7 @@ ul { list-style: none; }
   margin: 0 auto;
   width: 100%;
   display: grid;
-  /* grid handled by bootstrap */
+
   align-items: center;
   gap: 64px;
 }
@@ -380,8 +372,8 @@ ul { list-style: none; }
 .hero-heading {
   font-family: 'Bebas Neue', var(--font-display);
   font-size: clamp(4.5rem, 10vw, 8.5rem);
-  font-weight: 400; /* Bebas Neue is naturally bold but weight 400 is standard */
-  line-height: 0.85; /* Tightly pack lines like the reference */
+  font-weight: 400; 
+  line-height: 0.85; 
   text-transform: uppercase;
   color: var(--text);
   margin-bottom: 24px;
@@ -424,7 +416,12 @@ ul { list-style: none; }
   50% { transform: translate(-50%, 8px); }
 }
 
-/* Hero card */
+@media (max-width: 900px), (max-height: 780px) {
+  .hero-scroll-indicator {
+    display: none;
+  }
+}
+
 .hero-right {
   display: flex;
   justify-content: center;
@@ -516,19 +513,19 @@ ul { list-style: none; }
 .physics-container {
   position: relative;
   width: 100%;
-  height: 500px; /* Space for the lanyard to swing */
+  height: 500px; 
   display: flex;
   justify-content: center;
   align-items: flex-start;
   overflow: visible;
-  z-index: 10; /* Keep it above other sections if dragged down */
-  pointer-events: none; /* Let clicks pass through */
+  z-index: 10; 
+  pointer-events: none; 
 }
 .physics-container canvas {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 1; /* Draw behind the DOM card so the lace comes from the back */
+  z-index: 1; 
   pointer-events: none;
 }
 .physical-id-card {
@@ -540,7 +537,7 @@ ul { list-style: none; }
   background: radial-gradient(circle at 10% 20%, rgba(18, 97, 163, 1) 0%, transparent 40%),
               radial-gradient(circle at 90% 80%, rgba(26, 172, 219, 1) 0%, transparent 40%),
               linear-gradient(135deg, #061c3b 0%, #020a16 100%);
-  border: 8px solid #181818; /* Black plastic case */
+  border: 8px solid #181818; 
   border-radius: 16px;
   box-sizing: border-box;
   box-shadow: 0 20px 40px rgba(10,31,59,0.3), inset 0 2px 10px rgba(0,0,0,0.2);
@@ -549,25 +546,25 @@ ul { list-style: none; }
   overflow: hidden;
   z-index: 2;
   cursor: grab;
-  user-select: none; /* Prevent text highlighting when dragging */
-  -webkit-user-drag: none; /* Prevent native dragging */
+  user-select: none; 
+  -webkit-user-drag: none; 
   transform-style: preserve-3d;
   will-change: transform;
-  pointer-events: auto; /* Catch clicks for the physics engine */
+  pointer-events: auto; 
   transform-origin: center center;
 }
-/* Shimmering Glare Effect for 3D realism */
+
 .physical-id-card::after {
   content: '';
   position: absolute;
-  top: -100%; left: -100%; right: -100%; bottom: -100%; /* Make glare massive so it never clips */
+  top: -100%; left: -100%; right: -100%; bottom: -100%; 
   background: radial-gradient(circle at center, rgba(255,255,255,0.15) 0%, transparent 50%);
   transform: translate(var(--glare-x, 0%), var(--glare-y, 0%));
   pointer-events: none;
-  opacity: 1; /* Keep it constant to avoid flickering */
+  opacity: 1; 
   mix-blend-mode: color-dodge;
 }
- 
+
 .id-card-hole {
   position: absolute;
   top: 8px;
@@ -578,6 +575,7 @@ ul { list-style: none; }
   background: var(--bg-2);
   box-shadow: inset 0 2px 4px rgba(0,0,0,0.15);
   z-index: 10;
+  border-radius: 0;
 }
 .id-bg-watermark {
   position: absolute;
@@ -696,7 +694,6 @@ ul { list-style: none; }
   50%      { transform: translateY(-16px); }
 }
 
-/* Scroll hint */
 .hero-scroll-hint {
   position: absolute;
   bottom: 40px; left: 50%;
@@ -722,14 +719,12 @@ ul { list-style: none; }
   50%      { opacity: .4; }
 }
 
-/* --- ABOUT --- */
-
 .about {
   padding: 120px 0;
   background: var(--bg-2);
 }
 .about-grid {
-  /* grid handled by bootstrap */
+
   align-items: center;
 }
 
@@ -825,7 +820,6 @@ ul { list-style: none; }
   color: var(--text-mid);
 }
 
-/* --- SKILLS --- */
 .skills {
   padding: 120px 0;
   overflow: hidden;
@@ -833,7 +827,7 @@ ul { list-style: none; }
 .keyboard-wrap {
   display: flex;
   justify-content: center;
-  transform: translateX(-5%); /* Umisod ng konti to the left */
+  transform: translateX(-5%); 
   margin-bottom: 80px;
   perspective: 1000px;
 }
@@ -844,7 +838,7 @@ ul { list-style: none; }
   border-radius: var(--radius-lg);
   box-shadow: 20px 20px 60px rgba(0,0,0,0.05), -20px -20px 60px rgba(255,255,255,0.5);
   transition: transform 0.5s ease;
-  user-select: none; /* Prevent highlighting text when clicking keys */
+  user-select: none; 
   -webkit-user-select: none;
 }
 .keyboard {
@@ -858,14 +852,13 @@ ul { list-style: none; }
   justify-content: center;
   position: relative;
 }
-/* Fix Isometric Row Stacking in 2D: bottom rows are drawn on top */
+
 .key-row:nth-child(1) { z-index: 1; }
 .key-row:nth-child(2) { z-index: 2; }
 .key-row:nth-child(3) { z-index: 3; }
 .key-row:nth-child(4) { z-index: 4; }
 .key-row:nth-child(5) { z-index: 5; }
 
-/* Individual 3D key */
 .key {
   position: relative;
   min-width: 76px;
@@ -877,12 +870,12 @@ ul { list-style: none; }
   border-radius: 8px;
   user-select: none;
   -webkit-user-select: none;
-  cursor: pointer; /* Tell browser it is a button */
+  cursor: pointer; 
   transition: transform 0.1s cubic-bezier(0.4, 0.0, 0.2, 1), box-shadow 0.1s cubic-bezier(0.4, 0.0, 0.2, 1);
-  pointer-events: auto; /* Fully clickable */
+  pointer-events: auto; 
+  flex-shrink: 0; 
 }
 
-/* Hit area to cover the shadow (safe now that scene is flat 2D) */
 .key::after {
   content: '';
   position: absolute;
@@ -896,23 +889,19 @@ ul { list-style: none; }
   top: -14px; right: -14px;
 }
 
-
-
-/* Fix Isometric Column Stacking: left keys are closer to the camera */
 .key:nth-child(1) { z-index: 5; }
 .key:nth-child(2) { z-index: 4; }
 .key:nth-child(3) { z-index: 3; }
 .key:nth-child(4) { z-index: 2; }
 .key:nth-child(5) { z-index: 1; }
 
-/* Realistic keycap indented top face */
 .key::before {
   content: '';
   position: absolute;
   top: 4px; left: 6px; right: 6px; bottom: 8px;
   border-radius: 6px;
   background: inherit;
-  filter: brightness(1.15); /* make the top face lighter */
+  filter: brightness(1.15); 
   box-shadow: inset 0 3px 6px rgba(255,255,255,0.2), inset 0 -3px 6px rgba(0,0,0,0.15);
 }
 
@@ -924,9 +913,9 @@ ul { list-style: none; }
   color: #fff;
   white-space: nowrap;
   z-index: 2;
-  margin-top: -2px; /* Center on the top face */
+  margin-top: -2px; 
 }
-/* Adjust sizing for longer text */
+
 .key-wide .key-label, .key-space .key-label {
   font-size: 0.95rem;
 }
@@ -940,7 +929,6 @@ ul { list-style: none; }
 .key-wide { min-width: 130px; }
 .key-space { min-width: 220px; }
 
-/* Vibrant Colored Keys with deep 16px extrusion */
 .key-orange { background: #FF5E00; box-shadow: -1px 1px 0 #C94A00, -2px 2px 0 #C94A00, -3px 3px 0 #C94A00, -4px 4px 0 #C94A00, -5px 5px 0 #C94A00, -6px 6px 0 #C94A00, -7px 7px 0 #C94A00, -8px 8px 0 #C94A00, -9px 9px 0 #C94A00, -10px 10px 0 #C94A00, -11px 11px 0 #C94A00, -12px 12px 0 #C94A00, -13px 13px 0 #C94A00, -14px 14px 0 #C94A00, -15px 15px 0 #C94A00, -16px 16px 0 #C94A00, -25px 25px 25px rgba(0,0,0,0.3); }
 .key-blue   { background: #00A6FF; box-shadow: -1px 1px 0 #0081C6, -2px 2px 0 #0081C6, -3px 3px 0 #0081C6, -4px 4px 0 #0081C6, -5px 5px 0 #0081C6, -6px 6px 0 #0081C6, -7px 7px 0 #0081C6, -8px 8px 0 #0081C6, -9px 9px 0 #0081C6, -10px 10px 0 #0081C6, -11px 11px 0 #0081C6, -12px 12px 0 #0081C6, -13px 13px 0 #0081C6, -14px 14px 0 #0081C6, -15px 15px 0 #0081C6, -16px 16px 0 #0081C6, -25px 25px 25px rgba(0,0,0,0.3); }
 .key-red    { background: #FF2E2E; box-shadow: -1px 1px 0 #C92424, -2px 2px 0 #C92424, -3px 3px 0 #C92424, -4px 4px 0 #C92424, -5px 5px 0 #C92424, -6px 6px 0 #C92424, -7px 7px 0 #C92424, -8px 8px 0 #C92424, -9px 9px 0 #C92424, -10px 10px 0 #C92424, -11px 11px 0 #C92424, -12px 12px 0 #C92424, -13px 13px 0 #C92424, -14px 14px 0 #C92424, -15px 15px 0 #C92424, -16px 16px 0 #C92424, -25px 25px 25px rgba(0,0,0,0.3); }
@@ -950,7 +938,6 @@ ul { list-style: none; }
 .key-teal .key-label { color: #0A152A; text-shadow: none; }
 .key-black  { background: #1B1B1B; box-shadow: -1px 1px 0 #0F0F0F, -2px 2px 0 #050505, -3px 3px 0 #050505, -4px 4px 0 #050505, -5px 5px 0 #050505, -6px 6px 0 #050505, -7px 7px 0 #050505, -8px 8px 0 #050505, -9px 9px 0 #050505, -10px 10px 0 #050505, -11px 11px 0 #050505, -12px 12px 0 #050505, -13px 13px 0 #050505, -14px 14px 0 #050505, -15px 15px 0 #050505, -16px 16px 0 #050505, -25px 25px 25px rgba(0,0,0,0.5); }
 
-/* Hover — brighten instead of moving to prevent edge flickering */
 .key:hover {
   z-index: 100;
 }
@@ -959,10 +946,9 @@ ul { list-style: none; }
   transition: filter 0.15s ease;
 }
 
-/* Active/Pressed — press deeply into the board */
 .key:active,
 .key.pressed {
-  transform: translate(-14px, 14px); /* Compress the full 16px height */
+  transform: translate(-14px, 14px); 
   z-index: 100;
 }
 .key-orange:active, .key-orange.pressed { box-shadow: -1px 1px 0 #C94A00, -2px 2px 0 #C94A00, -4px 4px 8px rgba(0,0,0,0.4); }
@@ -973,7 +959,6 @@ ul { list-style: none; }
 .key-teal:active, .key-teal.pressed   { box-shadow: -1px 1px 0 #00B4C9, -2px 2px 0 #00B4C9, -4px 4px 8px rgba(0,0,0,0.4); }
 .key-black:active, .key-black.pressed  { box-shadow: -1px 1px 0 #0F0F0F, -2px 2px 0 #050505, -4px 4px 8px rgba(0,0,0,0.5); }
 
-/* Selected Outline */
 .key.selected::after {
   content: '';
   position: absolute;
@@ -984,7 +969,6 @@ ul { list-style: none; }
   transform: translateZ(5px);
 }
 
-/* Skill panel */
 .skill-panel {
   max-width: 760px;
   margin: 0 auto;
@@ -1100,7 +1084,6 @@ ul { list-style: none; }
   box-shadow: 0 4px 12px rgba(10, 31, 59, 0.15);
 }
 
-/* --- PROJECTS --- */
 .projects {
   padding: 120px 0;
   background: var(--bg-2);
@@ -1232,7 +1215,6 @@ ul { list-style: none; }
 }
 .project-link:hover { gap: 8px; }
 
-/* --- CONTACT --- */
 .contact {
   padding: 120px 0;
   position: relative;
@@ -1284,7 +1266,6 @@ ul { list-style: none; }
   max-width: 340px;
 }
 
-/* Form */
 .contact-form {
   display: flex;
   flex-direction: column;
@@ -1394,7 +1375,6 @@ ul { list-style: none; }
   font-weight: 500;
 }
 
-/* --- FOOTER --- */
 .footer {
   padding: 40px 0 24px;
   background: var(--bg);
@@ -1460,7 +1440,6 @@ ul { list-style: none; }
   transform: translate(0,0) !important;
 }
 
-/* --- RESPONSIVE --- */
 @media (max-width: 900px) {
   .hero-content {
     grid-template-columns: 1fr;
@@ -1486,7 +1465,7 @@ ul { list-style: none; }
   .nav-links { display: none; }
   .nav-hamburger { display: flex; }
 
-  .keyboard { transform: scale(.85); transform-origin: center top; }
+  .keyboard-3d-scene { transform: rotateX(55deg) rotateZ(-40deg) scale(0.85); }
   .key-space { min-width: 180px; }
 }
 
@@ -1495,12 +1474,10 @@ ul { list-style: none; }
   .hero { padding: 100px 20px 60px; }
   .hero-heading { font-size: 2.8rem; }
 
-
   .about, .skills, .projects, .contact { padding: 80px 0; }
 
-  .keyboard {
-    transform: scale(.72);
-    transform-origin: center top;
+  .keyboard-3d-scene {
+    transform: rotateX(55deg) rotateZ(-40deg) scale(0.68);
   }
   .key-space { min-width: 140px; }
   .key-wide { min-width: 100px; }
@@ -1513,7 +1490,12 @@ ul { list-style: none; }
   .footer-inner { flex-direction: column; align-items: center; text-align: center; }
 }
 
-/* ── Reduced motion ───────────────────────────────── */
+@media (max-width: 420px) {
+  .keyboard-3d-scene {
+    transform: rotateX(55deg) rotateZ(-40deg) scale(0.55);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: .01ms !important;
@@ -1521,7 +1503,6 @@ ul { list-style: none; }
   }
 }
 
-/* ── MODAL ───────────────────────────────────────── */
 .glass-modal {
   background: var(--bg-glass);
   backdrop-filter: var(--blur);
@@ -1532,4 +1513,58 @@ ul { list-style: none; }
 }
 .modal-backdrop.show {
   opacity: 0.6;
+}
+
+#modalImageContainer {
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+#modalImageContainer.zoomed {
+  height: auto !important;
+  max-height: 75vh !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+#modalImageContainer.zoomed img {
+  height: auto !important;
+  width: 100% !important;
+  object-fit: unset !important;
+}
+#modalImageContainer.zoomed .carousel,
+#modalImageContainer.zoomed .carousel-inner,
+#modalImageContainer.zoomed .carousel-item {
+  height: auto !important;
+}
+
+/* --- CUSTOM SCROLLBAR --- */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #020a16;
+}
+::-webkit-scrollbar-thumb {
+  background: #1aacdb;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #1261a3;
+}
+
+/* --- PAGE TRANSITION --- */
+.fade-in-page {
+  animation: pageFadeIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  opacity: 0;
+}
+
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.glass-modal .project-desc {
+  color: var(--text-mid) !important;
 }

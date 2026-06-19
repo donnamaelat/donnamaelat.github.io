@@ -312,7 +312,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Draw the silver metal connector loop
     context.beginPath();
-    context.roundRect(-10, -12, 20, 24, 4); // x, y, width, height, radii
+    context.rect(-10, -12, 20, 24); // Square metal loop
     context.fillStyle = '#b0b5b9'; // Silver base
     context.fill();
     context.lineWidth = 2;
@@ -321,7 +321,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Draw metal highlight for 3D shine
     context.beginPath();
-    context.roundRect(-8, -10, 8, 20, 2);
+    context.rect(-8, -10, 8, 20); // Square highlight
     context.fillStyle = '#ffffff';
     context.fill();
 

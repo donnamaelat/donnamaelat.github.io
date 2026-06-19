@@ -38,7 +38,7 @@ Because the navigation bar loads dynamically, the website must be run using a lo
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/donnamaelat/portpolio-website.git
+   git clone https://github.com/donnamaelat/donnamaelat.github.io.git
    ```
 2. **Open the project:**
    Open the folder in VS Code.

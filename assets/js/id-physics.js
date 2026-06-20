@@ -55,12 +55,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const segmentWidth = 6;
   
   // Calculate anchor point
-  const rect = container.getBoundingClientRect();
-  const containerTop = rect.top + window.scrollY;
-  
   let anchorX = OVERFLOW_PADDING + width / 2;
   const isStacked = window.innerWidth < 992;
-  let anchorY = isStacked ? (OVERFLOW_PADDING - 40) : (OVERFLOW_PADDING - containerTop);
+  let anchorY = isStacked ? (OVERFLOW_PADDING - 40) : (OVERFLOW_PADDING - 120);
   
   const targetRestingY = OVERFLOW_PADDING + 60;
   const totalLaceLength = targetRestingY - anchorY;
@@ -69,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const maroonColor = '#0B1B4A';
 
-  // Create card body
+  //card body
   const cardWidth = 250;
   const cardHeight = 375;
   const cardBody = Bodies.rectangle(
@@ -98,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   Composite.add(world, [cardBody, cardConstraint]);
 
-  // Set up mouse constraint
+ 
   const mouse = Mouse.create(container);
   Mouse.setOffset(mouse, { x: -OVERFLOW_PADDING, y: -OVERFLOW_PADDING });
   const initialScale = getContainerScale();
@@ -335,20 +332,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const runner = Runner.create();
   Runner.run(runner, engine);
 
-  // Remove entrance animation class
+  
   setTimeout(() => {
     container.classList.remove('badge-entrance');
   }, 1600);
 
-  // Handle window resizing
+  
   window.addEventListener('resize', () => {
     const newWidth = container.clientWidth;
-    const newRect = container.getBoundingClientRect();
-    const newContainerTop = newRect.top + window.scrollY;
     
     const isStackedMode = window.innerWidth < 992;
     const newAnchorX = OVERFLOW_PADDING + newWidth / 2;
-    const newAnchorY = isStackedMode ? (OVERFLOW_PADDING - 40) : (OVERFLOW_PADDING - newContainerTop);
+    const newAnchorY = isStackedMode ? (OVERFLOW_PADDING - 40) : (OVERFLOW_PADDING - 120);
     
     const newLaceLength = targetRestingY - newAnchorY;
     

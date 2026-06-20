@@ -1572,8 +1572,8 @@ ul { list-style: none; }
     max-height: 350px;
   }
   .hero-right {
-    margin-top: -5vh;
-    margin-bottom: -8vh;
+    margin-top: -2vh;
+    margin-bottom: 2vh;
   }
 }
 
@@ -1585,8 +1585,8 @@ ul { list-style: none; }
     max-height: 320px;
   }
   .hero-right {
-    margin-top: -6vh;
-    margin-bottom: -10vh;
+    margin-top: -2vh;
+    margin-bottom: 2vh;
   }
 }
 
@@ -1607,8 +1607,8 @@ ul { list-style: none; }
     max-height: 280px;
   }
   .hero-right {
-    margin-top: -8vh;
-    margin-bottom: -12vh;
+    margin-top: -3vh;
+    margin-bottom: 1vh;
   }
 }
 

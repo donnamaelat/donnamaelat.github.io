@@ -58,32 +58,14 @@ async function loadNavbar() {
     </nav>
 
     <div class="mobile-nav" id="mobileNav">
-      <div class="mobile-nav-header">
-        <a href="index.html" class="nav-logo">
-          <img src="assets/img/logo.png" alt="DML Logo" class="nav-logo-img">
-          <span>DML<span class="nav-logo-dot">.</span></span>
-        </a>
-        <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">✕</button>
-      </div>
-      
-      <div class="mobile-nav-body">
-        <ul class="mobile-nav-links">
-          <li style="--i: 1;"><a href="index.html" class="mob-link"><span class="link-num">01</span>About</a></li>
-          <li style="--i: 2;"><a href="cv.html" class="mob-link"><span class="link-num">02</span>CV</a></li>
-          <li style="--i: 3;"><a href="projects.html" class="mob-link"><span class="link-num">03</span>Projects</a></li>
-          <li style="--i: 4;"><a href="awards.html" class="mob-link"><span class="link-num">04</span>Awards</a></li>
-          <li style="--i: 5;"><a href="contact.html" class="mob-link"><span class="link-num">05</span>Contact</a></li>
-        </ul>
-      </div>
-
-      <div class="mobile-nav-footer">
-        <div class="mobile-socials">
-          <a href="https://github.com/donnamaelat" target="_blank" aria-label="GitHub">GitHub</a>
-          <span class="social-divider"></span>
-          <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn">LinkedIn</a>
-        </div>
-        <p class="mobile-nav-email">donnamaelat@gmail.com</p>
-      </div>
+      <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">✕</button>
+      <ul>
+        <li><a href="index.html" class="mob-link">About</a></li>
+        <li><a href="cv.html" class="mob-link">CV</a></li>
+        <li><a href="projects.html" class="mob-link">Projects</a></li>
+        <li><a href="awards.html" class="mob-link">Awards</a></li>
+        <li><a href="contact.html" class="mob-link">Contact</a></li>
+      </ul>
     </div>
   `;
 

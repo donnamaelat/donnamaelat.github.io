@@ -29,15 +29,17 @@ document.addEventListener("DOMContentLoaded", () => {
   let width = container.clientWidth;
   const height = container.clientHeight;
 
-  const OVERFLOW_PADDING = 1000;
+  const OVERFLOW_PADDING_X = 0;
+  const OVERFLOW_PADDING_Y = 200;
 
   const render = Render.create({
     element: container,
     engine: engine,
     options: {
-      width: width + OVERFLOW_PADDING * 2,
-      height: height + OVERFLOW_PADDING * 2,
+      width: width + OVERFLOW_PADDING_X * 2,
+      height: height + OVERFLOW_PADDING_Y * 2,
       wireframes: false,
+      showConstraints: false,
       background: 'transparent',
       pixelRatio: window.devicePixelRatio
     }
@@ -45,10 +47,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Position canvas
   render.canvas.style.position = 'absolute';
-  render.canvas.style.top = `-${OVERFLOW_PADDING}px`;
-  render.canvas.style.left = `-${OVERFLOW_PADDING}px`;
-  render.canvas.style.width = `${width + OVERFLOW_PADDING * 2}px`;
-  render.canvas.style.height = `${height + OVERFLOW_PADDING * 2}px`;
+  render.canvas.style.top = `-${OVERFLOW_PADDING_Y}px`;
+  render.canvas.style.left = `-${OVERFLOW_PADDING_X}px`;
+  render.canvas.style.width = `${width + OVERFLOW_PADDING_X * 2}px`;
+  render.canvas.style.height = `${height + OVERFLOW_PADDING_Y * 2}px`;
   render.canvas.style.pointerEvents = 'none';
   render.canvas.classList.add('lace');
 
@@ -63,11 +65,11 @@ document.addEventListener("DOMContentLoaded", () => {
   let lastContainerTop = containerTop;
   let lastContainerWidth = width;
   
-  let anchorX = OVERFLOW_PADDING + width / 2;
+  let anchorX = OVERFLOW_PADDING_X + width / 2;
   const isStacked = window.innerWidth < 992;
-  let anchorY = isStacked ? (OVERFLOW_PADDING - 40) : (OVERFLOW_PADDING - containerTop);
+  let anchorY = isStacked ? (OVERFLOW_PADDING_Y - 40) : (OVERFLOW_PADDING_Y - containerTop);
   
-  const targetRestingY = OVERFLOW_PADDING + 60;
+  const targetRestingY = OVERFLOW_PADDING_Y + 60;
   const totalLaceLength = targetRestingY - anchorY;
   const lanyardLength = totalLaceLength / segmentLength;
   let maxLaceLength = totalLaceLength;
@@ -105,7 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
  
   const mouse = Mouse.create(container);
-  Mouse.setOffset(mouse, { x: -OVERFLOW_PADDING, y: -OVERFLOW_PADDING });
+  Mouse.setOffset(mouse, { x: -OVERFLOW_PADDING_X, y: -OVERFLOW_PADDING_Y });
   const initialScale = getContainerScale();
   mouse.scale = { x: 1 / initialScale, y: 1 / initialScale };
 
@@ -135,8 +137,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (mouse.button === 0) {
       const bounds = container.getBoundingClientRect();
       const scale = getContainerScale();
-      mouse.position.x = (e.clientX - bounds.left) / scale + OVERFLOW_PADDING;
-      mouse.position.y = (e.clientY - bounds.top) / scale + OVERFLOW_PADDING;
+      mouse.position.x = (e.clientX - bounds.left) / scale + OVERFLOW_PADDING_X;
+      mouse.position.y = (e.clientY - bounds.top) / scale + OVERFLOW_PADDING_Y;
       mouse.absolute.x = mouse.position.x;
       mouse.absolute.y = mouse.position.y;
     }
@@ -152,8 +154,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const touch = e.touches[0];
       const bounds = container.getBoundingClientRect();
       const scale = getContainerScale();
-      mouse.position.x = (touch.clientX - bounds.left) / scale + OVERFLOW_PADDING;
-      mouse.position.y = (touch.clientY - bounds.top) / scale + OVERFLOW_PADDING;
+      mouse.position.x = (touch.clientX - bounds.left) / scale + OVERFLOW_PADDING_X;
+      mouse.position.y = (touch.clientY - bounds.top) / scale + OVERFLOW_PADDING_Y;
       mouse.absolute.x = mouse.position.x;
       mouse.absolute.y = mouse.position.y;
     }
@@ -191,7 +193,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const shiftX = (currentContainerWidth - lastContainerWidth) / 2;
       
       const isStackedMode = window.innerWidth < 992;
-      const newAnchorY = isStackedMode ? (OVERFLOW_PADDING - 40) : (OVERFLOW_PADDING - currentContainerTop);
+      const newAnchorY = isStackedMode ? (OVERFLOW_PADDING_Y - 40) : (OVERFLOW_PADDING_Y - currentContainerTop);
       const shiftY = newAnchorY - anchorY;
       
       Matter.Body.setPosition(cardBody, {
@@ -204,7 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
       lastContainerWidth = currentContainerWidth;
       
       width = currentContainerWidth;
-      anchorX = OVERFLOW_PADDING + width / 2;
+      anchorX = OVERFLOW_PADDING_X + width / 2;
       anchorY = newAnchorY;
       
       const newLaceLength = targetRestingY - anchorY;
@@ -215,10 +217,10 @@ document.addEventListener("DOMContentLoaded", () => {
       cardConstraint.pointA.y = anchorY;
       
       const pr = window.devicePixelRatio || 1;
-      render.options.width = width + OVERFLOW_PADDING * 2;
-      render.canvas.width = (width + OVERFLOW_PADDING * 2) * pr;
-      render.canvas.style.width = (width + OVERFLOW_PADDING * 2) + 'px';
-      render.canvas.style.height = (container.clientHeight + OVERFLOW_PADDING * 2) + 'px';
+      render.options.width = width + OVERFLOW_PADDING_X * 2;
+      render.canvas.width = (width + OVERFLOW_PADDING_X * 2) * pr;
+      render.canvas.style.width = (width + OVERFLOW_PADDING_X * 2) + 'px';
+      render.canvas.style.height = (container.clientHeight + OVERFLOW_PADDING_Y * 2) + 'px';
     }
 
     const attachmentX = cardBody.position.x - (-cardHeight/2 + 5) * Math.sin(cardBody.angle);
@@ -257,8 +259,8 @@ document.addEventListener("DOMContentLoaded", () => {
       Matter.Body.setVelocity(cardBody, { x: 0, y: 0 });
     }
 
-    const x = cardBody.position.x - cardWidth / 2 - OVERFLOW_PADDING;
-    const y = cardBody.position.y - cardHeight / 2 - OVERFLOW_PADDING;
+    const x = cardBody.position.x - cardWidth / 2 - OVERFLOW_PADDING_X;
+    const y = cardBody.position.y - cardHeight / 2 - OVERFLOW_PADDING_Y;
     const angle = cardBody.angle;
 
     const velocityX = cardBody.velocity.x;
@@ -390,8 +392,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const newContainerTop = newRect.top + window.scrollY;
     
     const isStackedMode = window.innerWidth < 992;
-    const newAnchorX = OVERFLOW_PADDING + newWidth / 2;
-    const newAnchorY = isStackedMode ? (OVERFLOW_PADDING - 40) : (OVERFLOW_PADDING - newContainerTop);
+    const newAnchorX = OVERFLOW_PADDING_X + newWidth / 2;
+    const newAnchorY = isStackedMode ? (OVERFLOW_PADDING_Y - 40) : (OVERFLOW_PADDING_Y - newContainerTop);
     
     const newLaceLength = targetRestingY - newAnchorY;
     
@@ -413,10 +415,10 @@ document.addEventListener("DOMContentLoaded", () => {
     cardConstraint.pointA.y = anchorY;
     
     const pr = window.devicePixelRatio || 1;
-    render.options.width = width + OVERFLOW_PADDING * 2;
-    render.canvas.width = (width + OVERFLOW_PADDING * 2) * pr;
-    render.canvas.style.width = (width + OVERFLOW_PADDING * 2) + 'px';
-    render.canvas.style.height = (container.clientHeight + OVERFLOW_PADDING * 2) + 'px';
+    render.options.width = width + OVERFLOW_PADDING_X * 2;
+    render.canvas.width = (width + OVERFLOW_PADDING_X * 2) * pr;
+    render.canvas.style.width = (width + OVERFLOW_PADDING_X * 2) + 'px';
+    render.canvas.style.height = (container.clientHeight + OVERFLOW_PADDING_Y * 2) + 'px';
 
     const newScale = getContainerScale();
     mouse.scale = { x: 1 / newScale, y: 1 / newScale };

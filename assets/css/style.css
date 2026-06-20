@@ -35,7 +35,6 @@ body {
   color: var(--text);
   font-family: var(--font-body);
   line-height: 1.6;
-  overflow-x: hidden;
 }
 body::before {
   content: '';
@@ -328,7 +327,7 @@ ul { list-style: none; }
   min-height: 100vh;
   padding: 120px 40px 80px;
   position: relative;
-  overflow: visible; 
+  overflow: visible;
   display: flex;
   align-items: center;
   z-index: 100;
@@ -559,8 +558,8 @@ ul { list-style: none; }
 }
 .physics-container canvas {
   position: absolute;
-  top: -1000px;
-  left: -1000px;
+  top: -200px;
+  left: 0px;
   z-index: 1; 
   pointer-events: none;
 }
@@ -571,8 +570,8 @@ ul { list-style: none; }
   animation-fill-mode: forwards;
   z-index: 1;
   position: absolute;
-  top: -1000px;
-  left: -1000px;
+  top: -200px;
+  left: 0px;
 }
 
 .lace.animate {
@@ -896,7 +895,7 @@ ul { list-style: none; }
 .keyboard-wrap {
   display: flex;
   justify-content: center;
-  transform: translateX(-5%); 
+  transform: translateX(-28%); 
   margin-bottom: 80px;
   perspective: 1000px;
 }
@@ -1550,7 +1549,7 @@ ul { list-style: none; }
     height: 250px;
     margin-bottom: 75px;
     margin-top: -20px;
-    transform: translateX(-10%);
+    transform: translateX(-34%);
   }
   .keyboard-3d-scene {
     transform: rotateX(55deg) rotateZ(-40deg) scale(0.68);
@@ -1618,7 +1617,7 @@ ul { list-style: none; }
     height: 190px;
     margin-bottom: 60px;
     margin-top: -30px;
-    transform: translateX(-12%);
+    transform: translateX(-36%);
   }
   .keyboard-3d-scene {
     transform: rotateX(55deg) rotateZ(-40deg) scale(0.55);

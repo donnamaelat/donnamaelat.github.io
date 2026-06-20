@@ -55,9 +55,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const segmentWidth = 6;
   
   // Calculate anchor point
+  const rect = container.getBoundingClientRect();
+  const containerTop = rect.top + window.scrollY;
+  
   let anchorX = OVERFLOW_PADDING + width / 2;
   const isStacked = window.innerWidth < 992;
-  let anchorY = isStacked ? (OVERFLOW_PADDING - 40) : (OVERFLOW_PADDING - 120);
+  let anchorY = isStacked ? (OVERFLOW_PADDING - 40) : (OVERFLOW_PADDING - containerTop);
   
   const targetRestingY = OVERFLOW_PADDING + 60;
   const totalLaceLength = targetRestingY - anchorY;
@@ -340,10 +343,12 @@ document.addEventListener("DOMContentLoaded", () => {
   
   window.addEventListener('resize', () => {
     const newWidth = container.clientWidth;
+    const newRect = container.getBoundingClientRect();
+    const newContainerTop = newRect.top + window.scrollY;
     
     const isStackedMode = window.innerWidth < 992;
     const newAnchorX = OVERFLOW_PADDING + newWidth / 2;
-    const newAnchorY = isStackedMode ? (OVERFLOW_PADDING - 40) : (OVERFLOW_PADDING - 120);
+    const newAnchorY = isStackedMode ? (OVERFLOW_PADDING - 40) : (OVERFLOW_PADDING - newContainerTop);
     
     const newLaceLength = targetRestingY - newAnchorY;
     

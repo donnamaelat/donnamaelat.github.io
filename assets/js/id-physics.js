@@ -15,22 +15,20 @@ document.addEventListener("DOMContentLoaded", () => {
         Constraint = Matter.Constraint,
         Events = Matter.Events;
 
-  // Create engine and improve stability for the heavy card
+  // Initialize engine
   const engine = Engine.create({
-    positionIterations: 20, // Huge stability increase so joints never break!
+    positionIterations: 20,
     velocityIterations: 15
   });
   const world = engine.world;
   
-  // CRITICAL FIX: Make gravity massive so the card snaps back down instantly when swung to the sides!
-  engine.gravity.y = 3.5; // Slightly reduced from 5.0 so it's not aggressively violent
+  // Set gravity
+  engine.gravity.y = 3.5;
 
-  // Set up rendering to draw the lace
+  // Set up renderer
   let width = container.clientWidth;
-  const height = container.clientHeight; // Usually 500px based on CSS
+  const height = container.clientHeight;
 
-  // CRITICAL FIX: The canvas cuts off the lace if dragged outside the container.
-  // We make the canvas massive (1000px padding in all directions) so it never clips!
   const OVERFLOW_PADDING = 1000;
 
   const render = Render.create({
@@ -45,37 +43,33 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Offset the canvas visually so it centers perfectly over the container
+  // Position canvas
   render.canvas.style.position = 'absolute';
   render.canvas.style.top = `-${OVERFLOW_PADDING}px`;
   render.canvas.style.left = `-${OVERFLOW_PADDING}px`;
   render.canvas.style.pointerEvents = 'none';
 
-  // Physical constants
+  // Constants
   const group = Matter.Body.nextGroup(true);
   const segmentLength = 22;
-  const segmentWidth = 6; // Thinner so it looks like a real fabric lanyard
+  const segmentWidth = 6;
   
-  // Calculate dynamic anchor point so the lace always originates from the top of the page (behind navbar)
+  // Calculate anchor point
   const rect = container.getBoundingClientRect();
   const containerTop = rect.top + window.scrollY;
   
-  // Anchor point (top center), offset by our padding!
   let anchorX = OVERFLOW_PADDING + width / 2;
-  // Move anchor to the top of the document (y = 0) on desktop, or slightly above container on stacked layout
   const isStacked = window.innerWidth < 992;
   let anchorY = isStacked ? (OVERFLOW_PADDING - 40) : (OVERFLOW_PADDING - containerTop);
   
-  // Calculate how long the lanyard needs to be to hang at the original spot
-  const targetRestingY = OVERFLOW_PADDING + 60; // Raised even further up per user request (from 100)
+  const targetRestingY = OVERFLOW_PADDING + 60;
   const totalLaceLength = targetRestingY - anchorY;
   const lanyardLength = totalLaceLength / segmentLength;
   let maxLaceLength = totalLaceLength;
 
-  // Navy Blue Lanyard color to match the brand
   const maroonColor = '#0B1B4A';
 
-  // Create the ID card rigid body
+  // Create card body
   const cardWidth = 250;
   const cardHeight = 375;
   const cardBody = Bodies.rectangle(
@@ -91,61 +85,51 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   );
 
-  // CRITICAL FIX: We completely remove the multi-segment physics chain! 
-  // Matter.js 2D solvers fundamentally jitter when multiple joints are under extreme mouse tension.
-  // By using a single, perfect constraint from the ceiling straight to the card, 
-  // we guarantee that it is MATHEMATICALLY IMPOSSIBLE to jitter, shake, or go crazy!
+  // Set up constraint
   const cardConstraint = Constraint.create({
-    pointA: { x: anchorX, y: anchorY }, // Attached directly to the ceiling anchor
+    pointA: { x: anchorX, y: anchorY },
     bodyB: cardBody,
-    pointB: { x: 0, y: -cardHeight/2 + 5 }, // Attach near the top edge so the clip peeks out from behind!
-    length: maxLaceLength, // Exact length of the original lace
-    stiffness: 1, // Perfectly rigid pendulum
-    damping: 0, // CRITICAL FIX: Zero damping so it swings back down instantly!
+    pointB: { x: 0, y: -cardHeight/2 + 5 },
+    length: maxLaceLength,
+    stiffness: 1,
+    damping: 0,
     render: { visible: false }
   });
 
   Composite.add(world, [cardBody, cardConstraint]);
 
-  // Add mouse control so user can drag the card and lace
-  // We bind it to the container so that it catches events from the DOM ID card over the canvas
+  // Set up mouse constraint
   const mouse = Mouse.create(container);
-  // Set initial offset to match the overflow-padding of the physics canvas
   Mouse.setOffset(mouse, { x: -OVERFLOW_PADDING, y: -OVERFLOW_PADDING });
-  // Apply CSS scale factor so Matter.js internal mouse tracking accounts for container scaling
   const initialScale = getContainerScale();
   mouse.scale = { x: 1 / initialScale, y: 1 / initialScale };
 
   const mouseConstraint = MouseConstraint.create(engine, {
     mouse: mouse,
-    collisionFilter: { mask: 0x0002 }, // ONLY grab the ID card, not the lanyard!
+    collisionFilter: { mask: 0x0002 },
     constraint: {
-      stiffness: 0.2, // CRITICAL FIX: The mouse acts as a soft spring. This prevents the mouse from violently ripping the rigid lace apart!
+      stiffness: 0.2,
       render: { visible: false }
     }
   });
 
-  // Helper: get the current CSS scale applied to the container (for responsive scaling)
   function getContainerScale() {
     const transform = window.getComputedStyle(container).transform;
     if (transform && transform !== 'none') {
       const values = transform.match(/matrix\(([^)]+)\)/);
       if (values) {
         const parts = values[1].split(',').map(Number);
-        return parts[0]; // scaleX from the matrix
+        return parts[0];
       }
     }
     return 1;
   }
 
-  // CRITICAL FIX: Prevent getting stuck at the edges or permanently attached to the cursor!
-  // If the mouse leaves the physics container, Matter.js stops tracking it. 
-  // We manually forward window-level mouse events to keep the drag perfectly smooth.
+  // Handle document level mouse events for drag behavior
   window.addEventListener('mousemove', (e) => {
-    if (mouse.button === 0) { // If we are currently holding the click
+    if (mouse.button === 0) {
       const bounds = container.getBoundingClientRect();
       const scale = getContainerScale();
-      // Divide by scale so the physics world position matches the visual position
       mouse.position.x = (e.clientX - bounds.left) / scale + OVERFLOW_PADDING;
       mouse.position.y = (e.clientY - bounds.top) / scale + OVERFLOW_PADDING;
       mouse.absolute.x = mouse.position.x;
@@ -154,10 +138,10 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   window.addEventListener('mouseup', () => {
-    mouse.button = -1; // Force release the card no matter where the mouse is!
+    mouse.button = -1;
   });
 
-  // MOBILE TOUCH SUPPORT: Forward touch events to the Matter.js mouse system
+  // Mobile touch support
   window.addEventListener('touchmove', (e) => {
     if (mouse.button === 0 && e.touches.length > 0) {
       const touch = e.touches[0];
@@ -174,14 +158,13 @@ document.addEventListener("DOMContentLoaded", () => {
     mouse.button = -1;
   });
 
-  // Prevent browser's native text/image drag logic from interfering with our physics dragging
+  // Prevent default browser dragging and text selection behaviors
   idCardDom.addEventListener('dragstart', (e) => e.preventDefault());
   idCardDom.addEventListener('mousedown', () => {
     if (window.getSelection) {
       window.getSelection().removeAllRanges();
     }
   });
-  // Prevent scroll-hijacking on mobile while dragging the badge
   idCardDom.addEventListener('touchstart', (e) => {
     e.preventDefault();
     if (window.getSelection) {
@@ -191,13 +174,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   Composite.add(world, mouseConstraint);
 
-  // Keep the mouse in sync with rendering
   render.mouse = mouse;
 
-  // CRITICAL FIX: The ultimate stable One-Way String!
-  // Instead of toggling stiffness (which causes physics glitches), 
-  // we dynamically shorten the constraint's "length" when pushed up. 
-  // This produces 0 force, allowing it to instantly drop straight down!
+  // Handle constraints update
   Events.on(engine, 'beforeUpdate', function() {
     const attachmentX = cardBody.position.x - (-cardHeight/2 + 5) * Math.sin(cardBody.angle);
     const attachmentY = cardBody.position.y + (-cardHeight/2 + 5) * Math.cos(cardBody.angle);
@@ -214,22 +193,19 @@ document.addEventListener("DOMContentLoaded", () => {
         cardConstraint.length = Math.min(maxDist, cardConstraint.length + 20);
       }
     } else {
-      // SHOCK ABSORBER: If the string was previously slack, this is the exact frame it snaps!
-      // We kill 60% of its kinetic energy instantly to prevent violent over-swaying!
       if (cardConstraint.length < maxDist - 1) {
         Matter.Body.setVelocity(cardBody, {
           x: cardBody.velocity.x * 0.4, 
           y: cardBody.velocity.y * 0.4
         });
       }
-      cardConstraint.length = maxDist; // Taut string: Rigidly stops at max length
+      cardConstraint.length = maxDist;
     }
   });
 
-  // Sync DOM element with physics body on every tick
+  // Sync DOM element with physics body positions
   Events.on(engine, 'afterUpdate', function() {
-    // Safety Net: If the card gets flung completely out of bounds, rescue it!
-    // Calculated relative to the anchor so the OVERFLOW_PADDING doesn't cause accidental teleports
+    // Out of bounds safety net
     const outOfBoundsX = Math.abs(cardBody.position.x - anchorX) > 2000;
     const outOfBoundsY = Math.abs(cardBody.position.y - anchorY) > 2000;
     
@@ -238,30 +214,22 @@ document.addEventListener("DOMContentLoaded", () => {
       Matter.Body.setVelocity(cardBody, { x: 0, y: 0 });
     }
 
-    // The physics body's position is its center. 
-    // We translate so the top-left of the DOM element is correct.
-    // We subtract the OVERFLOW_PADDING so the HTML element ignores the canvas padding and stays perfectly aligned!
     const x = cardBody.position.x - cardWidth / 2 - OVERFLOW_PADDING;
     const y = cardBody.position.y - cardHeight / 2 - OVERFLOW_PADDING;
     const angle = cardBody.angle;
 
-    // Calculate 3D tilt based on physics velocity
-    // When it moves fast, it tilts in 3D space!
     const velocityX = cardBody.velocity.x;
     const velocityY = cardBody.velocity.y;
     
-    // Clamp tilt angles to max 30 degrees for realism
     const tiltX = Math.max(-30, Math.min(30, velocityY * -1.5));
     const tiltY = Math.max(-30, Math.min(30, velocityX * 1.5));
 
-    // Combine 2D position/rotation with 3D tilts. Apply perspective directly to the card so it doesn't distort when dragged off-center!
     idCardDom.style.transform = `translate(${x}px, ${y}px) perspective(1000px) rotateZ(${angle}rad) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
 
-    // Handle Shimmer Glare
+    // Handle shimmer reflection effect
     const speed = Math.sqrt(velocityX*velocityX + velocityY*velocityY);
     if (speed > 0.5) {
       idCardDom.classList.add('is-moving');
-      // Move the gradient around based on tilt to simulate real light reflections
       idCardDom.style.setProperty('--glare-x', `${tiltY * -2}%`);
       idCardDom.style.setProperty('--glare-y', `${tiltX * 2}%`);
     } else {
@@ -269,44 +237,34 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Render a beautifully smooth continuous curve for the lanyard
-  // We use a Bezier curve to simulate the string bending due to air drag and gravity,
-  // making it look completely natural and flexible without any physics jitter!
+  // Render lanyard curve
   Events.on(render, 'afterRender', function() {
     const context = render.context;
     
-    // Draw the line near the top edge of the ID card so it peeks out from behind
     const attachmentPoint = {
       x: cardBody.position.x - (-cardHeight/2 + 5) * Math.sin(cardBody.angle),
       y: cardBody.position.y + (-cardHeight/2 + 5) * Math.cos(cardBody.angle)
     };
 
-    // Calculate the mid-point of the string
     const midX = (anchorX + attachmentPoint.x) / 2;
     const midY = (anchorY + attachmentPoint.y) / 2;
 
-    // 1. Simulating Air Resistance: The string bows in the opposite direction of movement
     const bowX = -cardBody.velocity.x * 2.5;
     const bowY = -cardBody.velocity.y * 2.5;
 
-    // 2. Simulating Slack: If you push the card up, the string sags downwards with gravity
     const dx = attachmentPoint.x - anchorX;
     const dy = attachmentPoint.y - anchorY;
     const dist = Math.sqrt(dx*dx + dy*dy);
     const maxDist = maxLaceLength;
     const slack = Math.max(0, maxDist - dist); 
 
-    // Combine them to create the perfect control point for the curve
     const cpX = midX + bowX;
     let cpY = midY + bowY + (slack * 1.5);
 
-    // FIX: Never let the string bow upwards past the anchor point! 
-    // If it tries to go up, reflect it downwards so it always sags naturally.
     if (cpY < anchorY) {
       cpY = anchorY + Math.abs(cpY - anchorY);
     }
 
-    // Function to draw the exact curve with varying styles
     const drawLace = (width, color, shadow = false) => {
       context.beginPath();
       context.moveTo(anchorX, anchorY);
@@ -327,53 +285,40 @@ document.addEventListener("DOMContentLoaded", () => {
       context.stroke();
     };
 
-    // Scale lanyard thickness dynamically for better mobile/responsive appearance
     const isStackedMode = window.innerWidth < 992;
-    const ts = isStackedMode ? 0.6 : 0.8; // thickness scale
+    const ts = isStackedMode ? 0.6 : 0.8;
 
-    // 1. Draw 3D Drop Shadow
+    // Draw 3D shadow and fabric highlights
     drawLace(40 * ts, 'rgba(0,0,0,0.1)', true);
-    
-    // 2. Draw Dark Outer Edge (Volume)
     drawLace(40 * ts, '#0d0d0d');
-    
-    // 3. Draw Main Black Fabric
     drawLace(36 * ts, '#1b1b1b');
-    
-    // 4. Draw Inner Fabric Highlight (Simulating rounded fabric lighting)
     drawLace(18 * ts, '#404040');
-    
-    // 5. Draw Tiny Specular Sheen (Nylon reflection)
     drawLace(5 * ts, 'rgba(255,255,255,0.10)');
 
-    // --- DRAW REALISTIC METAL CLIP ---
+    // Draw metal clip connector
     context.shadowColor = 'rgba(0,0,0,0.5)';
     context.shadowBlur = 5;
     context.shadowOffsetY = 3;
     
-    // Calculate angle from control point to attachment point to align the clip
     const clipAngle = Math.atan2(attachmentPoint.y - cpY, attachmentPoint.x - cpX);
     
     context.save();
     context.translate(attachmentPoint.x, attachmentPoint.y);
     context.rotate(clipAngle);
 
-    // Draw the silver metal connector loop
     context.beginPath();
-    context.rect(-10, -12, 20, 24); // Square metal loop
-    context.fillStyle = '#b0b5b9'; // Silver base
+    context.rect(-10, -12, 20, 24);
+    context.fillStyle = '#b0b5b9';
     context.fill();
     context.lineWidth = 2;
-    context.strokeStyle = '#6e7377'; // Dark metal edge
+    context.strokeStyle = '#6e7377';
     context.stroke();
 
-    // Draw metal highlight for 3D shine
     context.beginPath();
-    context.rect(-8, -10, 8, 20); // Square highlight
+    context.rect(-8, -10, 8, 20);
     context.fillStyle = '#ffffff';
     context.fill();
 
-    // Draw the little rivet/pin
     context.beginPath();
     context.arc(0, 6, 3, 0, Math.PI * 2);
     context.fillStyle = '#4a4d50';
@@ -381,24 +326,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     context.restore();
     
-    // Reset shadow for other renderings
     context.shadowColor = 'transparent';
     context.shadowBlur = 0;
     context.shadowOffsetY = 0;
   });
 
-  // Run the physics engine and renderer
   Render.run(render);
   const runner = Runner.create();
   Runner.run(runner, engine);
 
-  // Remove the CSS entrance animation class after it finishes
-  // so it doesn't conflict with the JS-driven physics transforms
+  // Remove entrance animation class
   setTimeout(() => {
     container.classList.remove('badge-entrance');
-  }, 1600); // 0.5s delay + 1s animation duration
+  }, 1600);
 
-  // Handle window resize gracefully
+  // Handle window resizing
   window.addEventListener('resize', () => {
     const newWidth = container.clientWidth;
     const newRect = container.getBoundingClientRect();
@@ -410,7 +352,6 @@ document.addEventListener("DOMContentLoaded", () => {
     
     const newLaceLength = targetRestingY - newAnchorY;
     
-    // Shift card body along with the anchor to avoid violent snaps
     const shiftX = newAnchorX - anchorX;
     const shiftY = newAnchorY - anchorY;
     Matter.Body.setPosition(cardBody, {
@@ -419,24 +360,20 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     Matter.Body.setVelocity(cardBody, { x: 0, y: 0 });
     
-    // Update active variables
     width = newWidth;
     anchorX = newAnchorX;
     anchorY = newAnchorY;
     maxLaceLength = newLaceLength;
     cardConstraint.length = newLaceLength;
     
-    // Update constraint pointA
     cardConstraint.pointA.x = anchorX;
     cardConstraint.pointA.y = anchorY;
     
-    // Update render width/bounds
     const pr = window.devicePixelRatio || 1;
     render.options.width = width + OVERFLOW_PADDING * 2;
     render.canvas.width = (width + OVERFLOW_PADDING * 2) * pr;
     render.canvas.style.width = (width + OVERFLOW_PADDING * 2) + 'px';
 
-    // Update mouse scale to match new CSS transform scale (responsive scaling)
     const newScale = getContainerScale();
     mouse.scale = { x: 1 / newScale, y: 1 / newScale };
   });

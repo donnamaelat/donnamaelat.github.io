@@ -1528,6 +1528,11 @@ ul { list-style: none; }
 
   .about, .skills, .projects, .contact { padding: 80px 0; }
 
+  .keyboard-wrap {
+    height: 250px;
+    margin-bottom: 40px;
+    margin-top: -20px;
+  }
   .keyboard-3d-scene {
     transform: rotateX(55deg) rotateZ(-40deg) scale(0.68);
   }
@@ -1590,6 +1595,11 @@ ul { list-style: none; }
 }
 
 @media (max-width: 420px) {
+  .keyboard-wrap {
+    height: 190px;
+    margin-bottom: 20px;
+    margin-top: -30px;
+  }
   .keyboard-3d-scene {
     transform: rotateX(55deg) rotateZ(-40deg) scale(0.55);
   }

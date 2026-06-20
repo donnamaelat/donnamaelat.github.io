@@ -563,7 +563,7 @@ ul { list-style: none; }
   left: -200%;
   width: 500%;
   height: 500%;
-  z-index: 10; 
+  z-index: 1; 
   pointer-events: none;
 }
 
@@ -571,7 +571,7 @@ ul { list-style: none; }
   opacity: 1;
   visibility: visible;
   animation-fill-mode: forwards;
-  z-index: 10;
+  z-index: 1;
   position: absolute;
   top: -200%;
   left: -200%;

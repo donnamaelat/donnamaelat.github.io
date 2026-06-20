@@ -148,6 +148,21 @@ ul { list-style: none; }
 
 .btn-full { width: 100%; justify-content: center; }
 
+/* Bootstrap 5 does not include responsive width utilities — add w-md-auto */
+@media (min-width: 768px) {
+  .w-md-auto {
+    width: auto !important;
+  }
+}
+/* Buttons: full-width + centered on mobile (≤576px) */
+@media (max-width: 576px) {
+  .btn-primary.w-100,
+  .btn-ghost.w-100 {
+    justify-content: center;
+    text-align: center;
+  }
+}
+
 .section-eyebrow {
   font-size: .75rem;
   font-weight: 600;
@@ -720,12 +735,8 @@ ul { list-style: none; }
 }
 
 .about {
-  padding: 120px 0;
+  padding: clamp(64px, 10vw, 120px) 0;
   background: var(--bg-2);
-}
-.about-grid {
-
-  align-items: center;
 }
 
 .about-img-card {
@@ -743,6 +754,11 @@ ul { list-style: none; }
   align-items: center;
   justify-content: center;
   overflow: hidden;
+}
+@media (max-width: 767.98px) {
+  .about-img-frame {
+    max-width: 280px;
+  }
 }
 .about-img-initials {
   font-family: var(--font-display);
@@ -771,22 +787,28 @@ ul { list-style: none; }
   box-shadow: var(--shadow-low);
 }
 .about-body {
-  font-size: .975rem;
+  font-size: clamp(0.875rem, 1.5vw, 0.975rem);
   color: var(--text-mid);
   line-height: 1.8;
-  margin-bottom: 16px;
+  /* margin/padding now handled by Bootstrap spacing utilities (mb-3) */
 }
 .about-stats {
   display: flex;
+  flex-wrap: wrap;
   gap: 16px;
-  margin: 40px 0;
-  padding: 24px 32px;
+  /* margin & padding now driven by Bootstrap utilities (mt-4 mb-4 p-3 p-md-4) */
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.8);
   border-radius: 24px;
   box-shadow: 0 8px 32px rgba(10, 31, 59, 0.05);
+  justify-content: center;
+}
+@media (min-width: 768px) {
+  .about-stats {
+    justify-content: flex-start;
+  }
 }
 .stat-item {
   flex: 1;
@@ -1450,11 +1472,8 @@ ul { list-style: none; }
   .hero-sub { margin: 0 auto 40px; }
   .hero-ctas { justify-content: center; }
 
-  .about-grid {
-    grid-template-columns: 1fr;
-    gap: 48px;
-  }
-  .about-img-frame { max-width: 280px; margin: 0 auto; }
+  /* About section: image above text on tablets */
+  .about-image-col { order: -1; }
 
   .contact-wrap {
     grid-template-columns: 1fr;
@@ -1482,7 +1501,9 @@ ul { list-style: none; }
   .key-space { min-width: 140px; }
   .key-wide { min-width: 100px; }
 
-  .about-stats { gap: 24px; }
+  .about-stats { gap: 12px; }
+  .stat-num { font-size: 2rem; }
+  .stat-label { font-size: .65rem; }
   .skill-panel-active { flex-direction: column; align-items: flex-start; }
   .skill-panel-right { min-width: unset; width: 100%; align-items: flex-start; }
   .skill-bar-wrap { width: 100%; }

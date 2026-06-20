@@ -35,7 +35,6 @@ const SKILLS = {
 };
 
 
-// Dynamically load the shared navbar and initialize scroll/hamburger listeners
 async function loadNavbar() {
   const defaultNavbarHTML = `
     <nav class="navbar" id="navbar">
@@ -72,7 +71,6 @@ async function loadNavbar() {
   try {
     let htmlText;
     
-    // Check if the site is running locally via file:// protocol (CORS restriction)
     if (window.location.protocol === 'file:') {
       console.log("Running locally via file:// protocol. Using embedded navbar template to bypass CORS restriction.");
       htmlText = defaultNavbarHTML;
@@ -89,11 +87,9 @@ async function loadNavbar() {
 
     const placeholder = document.getElementById('navbar-placeholder');
     if (placeholder) {
-      // Create a temporary container to parse HTML string
       const temp = document.createElement('div');
       temp.innerHTML = htmlText;
       
-      // Highlight the active page link based on the current filename
       const path = window.location.pathname;
       const filename = path.split('/').pop() || 'index.html';
       
@@ -107,16 +103,13 @@ async function loadNavbar() {
         }
       });
 
-      // Replace placeholder div directly with all child elements from temp
       placeholder.replaceWith(...temp.childNodes);
       
-      // Initialize scroll event listener
       const navbar = document.getElementById('navbar');
       window.addEventListener('scroll', () => {
         if (navbar) navbar.classList.toggle('scrolled', window.scrollY > 40);
       }, { passive: true });
 
-      // Initialize hamburger click event listeners
       const hamburger  = document.getElementById('hamburger');
       const mobileNav  = document.getElementById('mobileNav');
       const closeBtn   = document.getElementById('mobileNavClose');
@@ -520,7 +513,6 @@ if (projectModalEl) {
 }
 } catch (error) { console.error("Error in PROJECT MODAL:", error); }
 
-// Force download for PDF file instead of opening it in a browser tab
 try {
   const downloadBtn = document.getElementById('downloadResumeBtn');
   if (downloadBtn) {
@@ -530,7 +522,6 @@ try {
       const link = this;
       const originalContent = link.innerHTML;
       
-      // Prevent double clicks and show loading feedback
       link.style.pointerEvents = 'none';
       link.style.opacity = '0.7';
       link.innerHTML = 'Downloading...';
@@ -552,11 +543,9 @@ try {
         })
         .catch(err => {
           console.error('Download failed, falling back:', err);
-          // Fallback if fetch fails (e.g. cross-origin/local filesystem restrictions)
           window.open(link.href, '_blank');
         })
         .finally(() => {
-          // Restore button state
           link.style.pointerEvents = 'auto';
           link.style.opacity = '1';
           link.innerHTML = originalContent;

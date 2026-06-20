@@ -43,10 +43,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Position canvas
+  // Position canvas using relative units to avoid mobile scaling glitches
   render.canvas.style.position = 'absolute';
-  render.canvas.style.top = `-${OVERFLOW_PADDING}px`;
-  render.canvas.style.left = `-${OVERFLOW_PADDING}px`;
+  render.canvas.style.top = '-200%';
+  render.canvas.style.left = '-200%';
+  render.canvas.style.width = '500%';
+  render.canvas.style.height = '500%';
   render.canvas.style.pointerEvents = 'none';
   render.canvas.classList.add('lace');
 
@@ -58,6 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Calculate anchor point
   const rect = container.getBoundingClientRect();
   const containerTop = rect.top + window.scrollY;
+  let lastContainerTop = containerTop;
   
   let anchorX = OVERFLOW_PADDING + width / 2;
   const isStacked = window.innerWidth < 992;
@@ -179,6 +182,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Handle constraints update
   Events.on(engine, 'beforeUpdate', function() {
+    const currentRect = container.getBoundingClientRect();
+    const currentContainerTop = currentRect.top + window.scrollY;
+    
+    if (currentContainerTop !== lastContainerTop) {
+      lastContainerTop = currentContainerTop;
+      const isStackedMode = window.innerWidth < 992;
+      const newAnchorY = isStackedMode ? (OVERFLOW_PADDING - 40) : (OVERFLOW_PADDING - currentContainerTop);
+      const newLaceLength = targetRestingY - newAnchorY;
+      
+      anchorY = newAnchorY;
+      maxLaceLength = newLaceLength;
+      cardConstraint.length = newLaceLength;
+      cardConstraint.pointA.y = anchorY;
+    }
+
     const attachmentX = cardBody.position.x - (-cardHeight/2 + 5) * Math.sin(cardBody.angle);
     const attachmentY = cardBody.position.y + (-cardHeight/2 + 5) * Math.cos(cardBody.angle);
     
@@ -373,7 +391,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const pr = window.devicePixelRatio || 1;
     render.options.width = width + OVERFLOW_PADDING * 2;
     render.canvas.width = (width + OVERFLOW_PADDING * 2) * pr;
-    render.canvas.style.width = (width + OVERFLOW_PADDING * 2) + 'px';
+    render.canvas.style.width = '500%';
+    render.canvas.style.height = '500%';
 
     const newScale = getContainerScale();
     mouse.scale = { x: 1 / newScale, y: 1 / newScale };

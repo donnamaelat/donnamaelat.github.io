@@ -110,7 +110,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // Add mouse control so user can drag the card and lace
   // We bind it to the container so that it catches events from the DOM ID card over the canvas
   const mouse = Mouse.create(container);
-  Mouse.setOffset(mouse, { x: -OVERFLOW_PADDING, y: -OVERFLOW_PADDING }); // Offset mouse to match physics world padding
+  // Set initial offset to match the overflow-padding of the physics canvas
+  Mouse.setOffset(mouse, { x: -OVERFLOW_PADDING, y: -OVERFLOW_PADDING });
+  // Apply CSS scale factor so Matter.js internal mouse tracking accounts for container scaling
+  const initialScale = getContainerScale();
+  mouse.scale = { x: 1 / initialScale, y: 1 / initialScale };
 
   const mouseConstraint = MouseConstraint.create(engine, {
     mouse: mouse,
@@ -121,22 +125,53 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Helper: get the current CSS scale applied to the container (for responsive scaling)
+  function getContainerScale() {
+    const transform = window.getComputedStyle(container).transform;
+    if (transform && transform !== 'none') {
+      const values = transform.match(/matrix\(([^)]+)\)/);
+      if (values) {
+        const parts = values[1].split(',').map(Number);
+        return parts[0]; // scaleX from the matrix
+      }
+    }
+    return 1;
+  }
+
   // CRITICAL FIX: Prevent getting stuck at the edges or permanently attached to the cursor!
   // If the mouse leaves the physics container, Matter.js stops tracking it. 
   // We manually forward window-level mouse events to keep the drag perfectly smooth.
   window.addEventListener('mousemove', (e) => {
     if (mouse.button === 0) { // If we are currently holding the click
       const bounds = container.getBoundingClientRect();
-      // Add OVERFLOW_PADDING so the global mouse perfectly matches the padded physics world!
-      mouse.position.x = e.clientX - bounds.left + OVERFLOW_PADDING;
-      mouse.position.y = e.clientY - bounds.top + OVERFLOW_PADDING;
-      mouse.absolute.x = e.clientX - bounds.left + OVERFLOW_PADDING;
-      mouse.absolute.y = e.clientY - bounds.top + OVERFLOW_PADDING;
+      const scale = getContainerScale();
+      // Divide by scale so the physics world position matches the visual position
+      mouse.position.x = (e.clientX - bounds.left) / scale + OVERFLOW_PADDING;
+      mouse.position.y = (e.clientY - bounds.top) / scale + OVERFLOW_PADDING;
+      mouse.absolute.x = mouse.position.x;
+      mouse.absolute.y = mouse.position.y;
     }
   });
 
   window.addEventListener('mouseup', () => {
     mouse.button = -1; // Force release the card no matter where the mouse is!
+  });
+
+  // MOBILE TOUCH SUPPORT: Forward touch events to the Matter.js mouse system
+  window.addEventListener('touchmove', (e) => {
+    if (mouse.button === 0 && e.touches.length > 0) {
+      const touch = e.touches[0];
+      const bounds = container.getBoundingClientRect();
+      const scale = getContainerScale();
+      mouse.position.x = (touch.clientX - bounds.left) / scale + OVERFLOW_PADDING;
+      mouse.position.y = (touch.clientY - bounds.top) / scale + OVERFLOW_PADDING;
+      mouse.absolute.x = mouse.position.x;
+      mouse.absolute.y = mouse.position.y;
+    }
+  }, { passive: true });
+
+  window.addEventListener('touchend', () => {
+    mouse.button = -1;
   });
 
   // Prevent browser's native text/image drag logic from interfering with our physics dragging
@@ -146,6 +181,13 @@ document.addEventListener("DOMContentLoaded", () => {
       window.getSelection().removeAllRanges();
     }
   });
+  // Prevent scroll-hijacking on mobile while dragging the badge
+  idCardDom.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    if (window.getSelection) {
+      window.getSelection().removeAllRanges();
+    }
+  }, { passive: false });
 
   Composite.add(world, mouseConstraint);
 
@@ -350,6 +392,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const runner = Runner.create();
   Runner.run(runner, engine);
 
+  // Remove the CSS entrance animation class after it finishes
+  // so it doesn't conflict with the JS-driven physics transforms
+  setTimeout(() => {
+    container.classList.remove('badge-entrance');
+  }, 1600); // 0.5s delay + 1s animation duration
+
   // Handle window resize gracefully
   window.addEventListener('resize', () => {
     const newWidth = container.clientWidth;
@@ -387,5 +435,9 @@ document.addEventListener("DOMContentLoaded", () => {
     render.options.width = width + OVERFLOW_PADDING * 2;
     render.canvas.width = (width + OVERFLOW_PADDING * 2) * pr;
     render.canvas.style.width = (width + OVERFLOW_PADDING * 2) + 'px';
+
+    // Update mouse scale to match new CSS transform scale (responsive scaling)
+    const newScale = getContainerScale();
+    mouse.scale = { x: 1 / newScale, y: 1 / newScale };
   });
 });

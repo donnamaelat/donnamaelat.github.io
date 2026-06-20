@@ -1530,7 +1530,7 @@ ul { list-style: none; }
 
   .keyboard-wrap {
     height: 250px;
-    margin-bottom: 40px;
+    margin-bottom: 75px;
     margin-top: -20px;
   }
   .keyboard-3d-scene {
@@ -1597,7 +1597,7 @@ ul { list-style: none; }
 @media (max-width: 420px) {
   .keyboard-wrap {
     height: 190px;
-    margin-bottom: 20px;
+    margin-bottom: 60px;
     margin-top: -30px;
   }
   .keyboard-3d-scene {

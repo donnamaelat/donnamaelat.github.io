@@ -48,6 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
   render.canvas.style.top = `-${OVERFLOW_PADDING}px`;
   render.canvas.style.left = `-${OVERFLOW_PADDING}px`;
   render.canvas.style.pointerEvents = 'none';
+  render.canvas.classList.add('lace');
 
   // Constants
   const group = Matter.Body.nextGroup(true);
@@ -377,4 +378,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const newScale = getContainerScale();
     mouse.scale = { x: 1 / newScale, y: 1 / newScale };
   });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelector(".lace")?.classList.add("animate");
 });

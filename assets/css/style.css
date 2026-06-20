@@ -559,10 +559,33 @@ ul { list-style: none; }
 }
 .physics-container canvas {
   position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1; 
+  top: 0%;
+  left: 0%;
+  z-index: 10; 
   pointer-events: none;
+}
+
+.lace {
+  opacity: 1;
+  visibility: visible;
+  animation-fill-mode: forwards;
+  z-index: 10;
+  position: absolute;
+  top: 0%;
+  left: 0%;
+}
+
+.lace.animate {
+  animation: laceFadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+}
+
+@keyframes laceFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 .physical-id-card {
   position: absolute;

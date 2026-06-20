@@ -1499,11 +1499,6 @@ ul { list-style: none; }
 
   .about-image-col { order: -1; }
 
-  .contact-wrap {
-    grid-template-columns: 1fr;
-    gap: 48px;
-  }
-
   .navbar { padding: 0 16px; width: calc(100% - 32px); top: 16px; }
   .nav-links { display: none; }
   .nav-hamburger { display: flex; }

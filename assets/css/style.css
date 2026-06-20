@@ -559,10 +559,8 @@ ul { list-style: none; }
 }
 .physics-container canvas {
   position: absolute;
-  top: -200%;
-  left: -200%;
-  width: 500%;
-  height: 500%;
+  top: -1000px;
+  left: -1000px;
   z-index: 1; 
   pointer-events: none;
 }
@@ -573,10 +571,8 @@ ul { list-style: none; }
   animation-fill-mode: forwards;
   z-index: 1;
   position: absolute;
-  top: -200%;
-  left: -200%;
-  width: 500%;
-  height: 500%;
+  top: -1000px;
+  left: -1000px;
 }
 
 .lace.animate {

@@ -148,13 +148,11 @@ ul { list-style: none; }
 
 .btn-full { width: 100%; justify-content: center; }
 
-/* Bootstrap 5 does not include responsive width utilities — add w-md-auto */
 @media (min-width: 768px) {
   .w-md-auto {
     width: auto !important;
   }
 }
-/* Buttons: full-width + centered on mobile (≤576px) */
 @media (max-width: 576px) {
   .btn-primary.w-100,
   .btn-ghost.w-100 {
@@ -541,7 +539,6 @@ ul { list-style: none; }
   will-change: transform;
 }
 
-/* Badge entrance animation — triggers on page load with relative units */
 @keyframes badgeEntrance {
   0% {
     opacity: 0;
@@ -818,13 +815,11 @@ ul { list-style: none; }
   font-size: clamp(0.875rem, 1.5vw, 0.975rem);
   color: var(--text-mid);
   line-height: 1.8;
-  /* margin/padding now handled by Bootstrap spacing utilities (mb-3) */
 }
 .about-stats {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
-  /* margin & padding now driven by Bootstrap utilities (mt-4 mb-4 p-3 p-md-4) */
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -1500,7 +1495,6 @@ ul { list-style: none; }
   .hero-sub { margin: 0 auto 40px; }
   .hero-ctas { justify-content: center; }
 
-  /* About section: image above text on tablets */
   .about-image-col { order: -1; }
 
   .contact-wrap {
@@ -1517,7 +1511,6 @@ ul { list-style: none; }
   .keyboard-3d-scene { transform: rotateX(55deg) rotateZ(-40deg) scale(0.85); }
   .key-space { min-width: 180px; }
 
-  /* Badge: scale down physics container for tablets (768px) */
   .physics-container {
     --badge-scale: 0.85;
     transform: scale(0.85);
@@ -1548,7 +1541,6 @@ ul { list-style: none; }
 
   .footer-inner { flex-direction: column; align-items: center; text-align: center; }
 
-  /* Badge: scale for phones ≤600px (covers 414px iPhone XR) */
   .physics-container {
     --badge-scale: 0.65;
     transform: scale(0.65);
@@ -1561,7 +1553,6 @@ ul { list-style: none; }
   }
 }
 
-/* 576px — Bootstrap sm breakpoint (covers 414px) */
 @media (max-width: 576px) {
   .physics-container {
     --badge-scale: 0.6;
@@ -1579,7 +1570,6 @@ ul { list-style: none; }
   .keyboard-3d-scene {
     transform: rotateX(55deg) rotateZ(-40deg) scale(0.55);
   }
-  /* Badge: smallest scale for 375px iPhone SE */
   .physics-container {
     --badge-scale: 0.5;
     transform: scale(0.5);

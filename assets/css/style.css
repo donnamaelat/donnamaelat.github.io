@@ -70,7 +70,7 @@ body::after {
   pointer-events: none;
 }
 img {
-  display:;
+  display: block;
   max-width: 100%;
 }
 a {
